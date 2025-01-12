@@ -38,7 +38,7 @@ const App = () => {
       <Provider store={store}>
         <AppHeader />
 
-        <Routes location={backgroundLocation || location}>
+        <Routes location={backgroundLocation ?? location}>
           <Route path='/' element={<ConstructorPage />} />
           <Route path='/feed' element={<Feed />} />
           <Route path='/feed/:number' element={<OrderInfo />} />

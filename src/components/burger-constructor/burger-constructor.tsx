@@ -1,6 +1,6 @@
 import { FC, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import {
   getConstructorItems,
@@ -16,6 +16,7 @@ import { TConstructorIngredient } from '@utils-types';
 export const BurgerConstructor: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const user = useSelector(getUser);
   const orderRequest = useSelector(getOrderRequest);
@@ -30,7 +31,7 @@ export const BurgerConstructor: FC = () => {
     if (user === null) {
       // если пользователя в хранилище нет, то делаем редирект
 
-      navigate('/login'); // Перенаправляем на дефолтный маршрут
+      navigate('/login', { state: { lastPath: location } }); // Перенаправляем на дефолтный маршрут
       return;
     }
 

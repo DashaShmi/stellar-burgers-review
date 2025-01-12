@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 import { Preloader } from '@ui';
 import { getIsAuthChecked, getUser } from '@selectors';
@@ -15,6 +15,8 @@ export const ProtectedRoute = ({
 }: ProtectedRouteProps) => {
   const user = useSelector(getUser);
   const isAuthChecked = useSelector(getIsAuthChecked);
+  const location = useLocation();
+  const lastPath: Location | undefined = location.state?.lastPath;
 
   if (!isAuthChecked) {
     // пока идёт чекаут пользователя, показываем прелоадер
@@ -28,7 +30,7 @@ export const ProtectedRoute = ({
 
   if (onlyUnAuth && user) {
     // если пользователь на странице авторизации и данные есть в хранилище
-    return <Navigate replace to='/profile' />;
+    return <Navigate replace to={lastPath ?? '/profile'} />;
   }
 
   return children;
