@@ -35,7 +35,11 @@ export const BurgerConstructor: FC = () => {
       return;
     }
 
-    const idsIngr = constructorItems.ingredients.map((x) => x._id);
+    const idsIngr: string[] = [];
+
+    idsIngr.push(constructorItems.bun._id);
+
+    idsIngr.push(...constructorItems.ingredients.map((x) => x._id));
 
     idsIngr.push(constructorItems.bun._id);
 
