@@ -17,7 +17,7 @@ export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
       } else {
         const constructorIndridient = {
           ...ingredient,
-          id: `new${ingredient._id}_${Math.random()}`
+          id: crypto.randomUUID()
         };
         dispatch(addIngridient(constructorIndridient));
       }
