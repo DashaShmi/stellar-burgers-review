@@ -5,22 +5,37 @@ import {
   loginUserApi,
   logoutApi,
   registerUserApi,
+  TLoginData,
   TRegisterData,
   updateUserApi
-} from '../../utils/burger-api';
-import { TOrder, TUser } from '../../utils/types';
+} from '@api';
+import { TOrder, TUser } from '@utils-types';
 import { deleteCookie, getCookie, setCookie } from '../../utils/cookie';
 
 export const registerUserApiThunk = createAsyncThunk(
   'user/register',
-  (data: TRegisterData) => registerUserApi(data)
-);
+  async (data: TRegisterData) => {
+    const authData = await registerUserApi(data);
+    setCookie('accessToken', authData.accessToken);
+    localStorage.setItem('refreshToken', authData.refreshToken);
+    return authData
+  });
+
 export const getUserApiThunk = createAsyncThunk('user/get', getUserApi);
-export const loginUserThunk = createAsyncThunk('user/login', loginUserApi);
-export const updateUserApiThank = createAsyncThunk(
-  'user/update',
-  updateUserApi
+
+export const loginUserThunk = createAsyncThunk(
+  'user/login',
+  async (data: TLoginData) => {
+    const loginUserData = await loginUserApi(data);
+    setCookie('accessToken', loginUserData.accessToken);
+    localStorage.setItem('refreshToken', loginUserData.refreshToken);
+    return loginUserData
+  }
 );
+
+
+export const updateUserApiThank = createAsyncThunk('user/update', updateUserApi);
+
 export const logoutUserThunk = createAsyncThunk(
   'user/logout',
   (_, { dispatch }) => {
@@ -96,8 +111,6 @@ export const userSlice = createSlice({
     builder.addCase(registerUserApiThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.user = action.payload.user;
-      setCookie('accessToken', action.payload.accessToken);
-      localStorage.setItem('refreshToken', action.payload.refreshToken);
     });
     //getUserApi
     builder.addCase(getUserApiThunk.pending, (state) => {
@@ -120,8 +133,6 @@ export const userSlice = createSlice({
     builder.addCase(loginUserThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.user = action.payload.user;
-      setCookie('accessToken', action.payload.accessToken);
-      localStorage.setItem('refreshToken', action.payload.refreshToken);
     });
     //getOrders
     builder.addCase(getOrdersApiThunk.pending, (state) => {

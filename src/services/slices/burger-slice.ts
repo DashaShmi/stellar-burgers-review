@@ -95,7 +95,6 @@ export const burgerSlice = createSlice({
     moveDown: (state, action: PayloadAction<TConstructorIngredient>) => {
       const ingridients = state.constructorItems.ingredients;
       const ingridient = action.payload;
-      const feed = state.feed;
 
       const index = ingridients.findIndex((x) => x.id === ingridient.id);
       if (index < 0 || index >= ingridients.length - 1) {
