@@ -8,26 +8,12 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 
 export const getIngredientsApiThunk = createAsyncThunk(
-  'burger/getIngredients',
-  async () => getIngredientsApi()
+  'burger/getIngredients', getIngredientsApi
 );
 
-export const getFeedsApiThunk = createAsyncThunk('orders/getFeeds', () =>
-  getFeedsApi()
-);
-
-export const orderBurgerApiThunk = createAsyncThunk(
-  'order/create',
-  async (ingridientIds: string[]) => {
-    const result = await orderBurgerApi(ingridientIds);
-    return result;
-  }
-);
-
-export const getOrderByNumberApiThunk = createAsyncThunk(
-  'order/get',
-  (id: number) => getOrderByNumberApi(id)
-);
+export const getFeedsApiThunk = createAsyncThunk('orders/getFeeds', getFeedsApi);
+export const orderBurgerApiThunk = createAsyncThunk('order/create', orderBurgerApi);
+export const getOrderByNumberApiThunk = createAsyncThunk('order/get', getOrderByNumberApi);
 
 export interface BurgerState {
   ingredients: TIngredient[];
