@@ -1,8 +1,8 @@
-import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 
 import { Preloader } from '@ui';
 import { getIsAuthChecked, getUser } from '@selectors';
+import { useAppSelector } from '@store';
 
 type ProtectedRouteProps = {
   onlyUnAuth?: boolean;
@@ -13,8 +13,8 @@ export const ProtectedRoute = ({
   onlyUnAuth,
   children
 }: ProtectedRouteProps) => {
-  const user = useSelector(getUser);
-  const isAuthChecked = useSelector(getIsAuthChecked);
+  const user = useAppSelector(getUser);
+  const isAuthChecked = useAppSelector(getIsAuthChecked);
   const location = useLocation();
   const lastPath: Location | undefined = location.state?.lastPath;
 

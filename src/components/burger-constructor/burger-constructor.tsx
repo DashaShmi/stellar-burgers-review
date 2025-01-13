@@ -1,5 +1,4 @@
 import { FC, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import {
@@ -9,7 +8,7 @@ import {
   getUser
 } from '@selectors';
 import { BurgerConstructorUI } from '@ui';
-import { useAppDispatch } from '@store';
+import { useAppDispatch, useAppSelector } from '@store';
 import { closeOrderModal, orderBurgerApiThunk } from '@slices';
 import { TConstructorIngredient } from '@utils-types';
 
@@ -18,10 +17,10 @@ export const BurgerConstructor: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const user = useSelector(getUser);
-  const orderRequest = useSelector(getOrderRequest);
-  const orderModalData = useSelector(getOrderModalData);
-  const constructorItems = useSelector(getConstructorItems);
+  const user = useAppSelector(getUser);
+  const orderRequest = useAppSelector(getOrderRequest);
+  const orderModalData = useAppSelector(getOrderModalData);
+  const constructorItems = useAppSelector(getConstructorItems);
 
   const onOrderClick = () => {
     if (constructorItems.bun === null || orderRequest) {

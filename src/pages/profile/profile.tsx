@@ -1,14 +1,13 @@
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import { Preloader } from '@ui';
 import { getUser } from '@selectors';
 import { ProfileUI } from '@ui-pages';
-import { useAppDispatch } from '@store';
+import { useAppDispatch, useAppSelector } from '@store';
 import { getUserApiThunk, updateUserApiThank } from '@slices';
 
 export const Profile: FC = () => {
-  const user = useSelector(getUser);
+  const user = useAppSelector(getUser);
 
   const dispatch = useAppDispatch();
 

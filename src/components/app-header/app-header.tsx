@@ -1,16 +1,15 @@
 import { FC, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 
 import { AppHeaderUI } from '@ui';
-import { useAppDispatch } from '@store';
+import { useAppDispatch, useAppSelector } from '@store';
 import { checkUserAuthThunk } from '@slices';
 import { getIsAuthChecked, getUser } from '@selectors';
 
 export const AppHeader: FC = () => {
   const dispatch = useAppDispatch();
 
-  const user = useSelector(getUser);
-  const isAuthChecked = useSelector(getIsAuthChecked);
+  const user = useAppSelector(getUser);
+  const isAuthChecked = useAppSelector(getIsAuthChecked);
 
   useEffect(() => {
     if (isAuthChecked) {

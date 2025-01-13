@@ -1,17 +1,17 @@
 import { forwardRef, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 
 import { TIngredient } from '@utils-types';
 import { IngredientsCategoryUI } from '@ui';
 import { getConstructorItems } from '@selectors';
 
 import { TIngredientsCategoryProps } from './type';
+import { useAppSelector } from '@store';
 
 export const IngredientsCategory = forwardRef<
   HTMLUListElement,
   TIngredientsCategoryProps
 >(({ title, titleRef, ingredients }, ref) => {
-  const constructorItems = useSelector(getConstructorItems);
+  const constructorItems = useAppSelector(getConstructorItems);
 
   const burgerConstructor = {
     bun: constructorItems.bun,

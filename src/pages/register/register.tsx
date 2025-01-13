@@ -1,11 +1,10 @@
 import { FC, SyntheticEvent, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 import { TRegisterData } from '@api';
 import { getUser } from '@selectors';
 import { RegisterUI } from '@ui-pages';
-import { useAppDispatch } from '@store';
+import { useAppDispatch, useAppSelector } from '@store';
 import { registerUserApiThunk } from '@slices';
 
 export const Register: FC = () => {
@@ -27,7 +26,7 @@ export const Register: FC = () => {
     dispatch(registerUserApiThunk(registerData));
   };
 
-  const user = useSelector(getUser);
+  const user = useAppSelector(getUser);
 
   if (user !== null) {
     return <Navigate to={'/profile'} />;

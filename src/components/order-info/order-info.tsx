@@ -1,8 +1,7 @@
 import { FC, useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { useAppDispatch } from '@store';
+import { useAppDispatch, useAppSelector } from '@store';
 import { TIngredient } from '@utils-types';
 import { Preloader, OrderInfoUI } from '@ui';
 import { getIngredientsApiThunk, getOrderByNumberApiThunk } from '@slices';
@@ -12,8 +11,8 @@ export const OrderInfo: FC = () => {
   const { number } = useParams();
   const dispatch = useAppDispatch();
 
-  const ingredients = useSelector(getIngredients);
-  const orderData = useSelector(getOrderModalData);
+  const ingredients = useAppSelector(getIngredients);
+  const orderData = useAppSelector(getOrderModalData);
 
   useEffect(() => {
     if (ingredients.length > 0) {

@@ -1,16 +1,15 @@
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
 import { getFeed } from '@selectors';
-import { useAppDispatch } from '@store';
+import { useAppDispatch, useAppSelector } from '@store';
 import { getFeedsApiThunk, getIngredientsApiThunk } from '@slices';
 
 export const Feed: FC = () => {
   const dispatch = useAppDispatch();
 
-  const { orders } = useSelector(getFeed);
+  const { orders } = useAppSelector(getFeed);
 
   if (orders.length === 0) {
     dispatch(getFeedsApiThunk());

@@ -1,15 +1,14 @@
 import { FC, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 
 import { getOrders } from '@selectors';
-import { useAppDispatch } from '@store';
+import { useAppDispatch, useAppSelector } from '@store';
 import { ProfileOrdersUI } from '@ui-pages';
 import { getIngredientsApiThunk, getOrdersApiThunk } from '@slices';
 
 export const ProfileOrders: FC = () => {
   const dispatch = useAppDispatch();
 
-  let orders = useSelector(getOrders);
+  let orders = useAppSelector(getOrders);
 
   useEffect(() => {
     if (orders.length === 0) {
