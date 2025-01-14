@@ -18,8 +18,9 @@ export const registerUserApiThunk = createAsyncThunk(
     const authData = await registerUserApi(data);
     setCookie('accessToken', authData.accessToken);
     localStorage.setItem('refreshToken', authData.refreshToken);
-    return authData
-  });
+    return authData;
+  }
+);
 
 export const getUserApiThunk = createAsyncThunk('user/get', getUserApi);
 
@@ -29,12 +30,14 @@ export const loginUserThunk = createAsyncThunk(
     const loginUserData = await loginUserApi(data);
     setCookie('accessToken', loginUserData.accessToken);
     localStorage.setItem('refreshToken', loginUserData.refreshToken);
-    return loginUserData
+    return loginUserData;
   }
 );
 
-
-export const updateUserApiThank = createAsyncThunk('user/update', updateUserApi);
+export const updateUserApiThank = createAsyncThunk(
+  'user/update',
+  updateUserApi
+);
 
 export const logoutUserThunk = createAsyncThunk(
   'user/logout',
