@@ -1,7 +1,7 @@
 {
   "parser": "@typescript-eslint/parser",
   "plugins": ["react", "@typescript-eslint", "prettier"],
-  "extends": ["prettier"],
+  "extends": ["prettier", "plugin:cypress/recommended"],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module",
