@@ -50,7 +50,6 @@ describe('проверяем добавление ингредиента из с
 
   it('открытие модалки, детальное описание', () => {
     cy.visit('http://localhost:4000/');
-
     const ingidient1 = cy.get(`[data-cy=ingridient-643d69a5c3f7b9001cfa0941]`);// Биокотлета из марсианской Магнолии
     ingidient1.find('a').click();
 
@@ -62,12 +61,18 @@ describe('проверяем добавление ингредиента из с
 
   it('детальное описание по прямой ссылке открывается без модалки', () => {
     cy.visit('http://localhost:4000/ingredients/643d69a5c3f7b9001cfa093e');
-
     cy.get(`[data-cy=modal]`).should('not.exist');
     cy.get(`[data-cy=ingidientDetail]`).contains('Филе Люминесцентного тетраодонтимформа');
   })
+
+  it('закрытие модалки на крестик', () => {
+    cy.visit('http://localhost:4000/');
+    const ingidient1 = cy.get(`[data-cy=ingridient-643d69a5c3f7b9001cfa0941]`);// Биокотлета из марсианской Магнолии
+    ingidient1.find('a').click();
+    const buttonClose = cy.get(`[data-cy=button-close]`);
+    buttonClose.click();
+    cy.get(`[data-cy=modal]`).should('not.exist');
+  })
+
 })
-// модальное окно
-// когда мы тыкаем в li по а у ингридиента, то открывется модальное окно
-// проверяем что а содержить такой текст 'Биокотлета из марсианской Магнолии'
-// тыкаем на крестик, проверяем что окно закрылось, как 
+
