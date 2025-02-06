@@ -73,6 +73,14 @@ describe('проверяем добавление ингредиента из с
     buttonClose.click();
     cy.get(`[data-cy=modal]`).should('not.exist');
   })
+  it('закрытие модалки кликом на оверлей', () => {
+    cy.visit('http://localhost:4000/');
+    const ingidient1 = cy.get(`[data-cy=ingridient-643d69a5c3f7b9001cfa0941]`);// Биокотлета из марсианской Магнолии
+    ingidient1.find('a').click();
+    const overlay = cy.get(`[data-cy=overlay]`);
+    overlay.click({ force: true });
+    cy.get(`[data-cy=modal]`).should('not.exist');
+  })
 
 })
 
