@@ -30,6 +30,8 @@ export const BurgerConstructor: FC = () => {
     if (user === null) {
       // если пользователя в хранилище нет, то делаем редирект
 
+      debugger;
+
       navigate('/login', { state: { lastPath: location } }); // Перенаправляем на дефолтный маршрут
       return;
     }

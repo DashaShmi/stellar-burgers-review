@@ -1,26 +1,37 @@
+import { setCookie } from "../../../src/utils/cookie";
+
+const cratorBunId = '643d69a5c3f7b9001cfa093c';// Kраторная булка
+const cutletId = '643d69a5c3f7b9001cfa0941';// Биокотлета из марсианской Магнолии
+const filletId = '643d69a5c3f7b9001cfa093e';//Филе Люминесцентного тетраодонтимформа
+
+function setupFakeApi() {
+  cy.intercept('GET', 'https://norma.nomoreparties.space/api/ingredients', { fixture: 'ingredients' });
+  cy.intercept('GET', 'https://norma.nomoreparties.space/api/auth/user', { fixture: 'user' });
+  cy.intercept('POST', 'https://norma.nomoreparties.space/api/orders', { fixture: 'order' });
+}
+
+function getIngridientButton(ingridientId: string): Cypress.Chainable<JQuery<HTMLButtonElement>> {
+  const li = cy.get(`[data-cy=ingridient-${ingridientId}]`)
+  const addButton = li.find('button');
+
+  return addButton;
+}
 
 describe('проверяем проверяем доступность приложения', function () {
-  it('сервис должен быть доступен по адресу localhost:4000', function () {
-    cy.intercept('GET', 'https://norma.nomoreparties.space/api/ingredients', { fixture: 'ingredients' });
+  before(() => setupFakeApi());
 
+  it('сервис должен быть доступен по адресу localhost:4000', function () {
     cy.visit('http://localhost:4000/');
   });
 });
 
 describe('проверяем добавление ингредиента из списка в конструктор', () => {
-  before(() => {
-    cy.intercept('GET', 'https://norma.nomoreparties.space/api/ingredients', { fixture: 'ingredients' });
-  })
+  before(() => setupFakeApi())
 
   it('после клика на "добавить" текст в булке изменился', () => {
     cy.visit('http://localhost:4000/');
 
-    const bulkaId = '643d69a5c3f7b9001cfa093c';// краторная булка
-    // находим в DOM дереве кнопку с атрибутом data-cy=
-    const li = cy.get(`[data-cy=ingridient-${bulkaId}]`)
-    const addButton = li.find('button');
-    // кликаем по ней
-    addButton.click();
+    getIngridientButton(cratorBunId).click();
 
     const bunContainernTop = cy.get(`[data-cy=bun-top]`);
     const bunContainernBottom = cy.get(`[data-cy=bun-bottom]`);
@@ -36,12 +47,8 @@ describe('проверяем добавление ингредиента из с
   it('добавление начинок', () => {
     cy.visit('http://localhost:4000/');
 
-    // находим в DOM дереве кнопку с атрибутом data-cy=
-    const ingidient1 = cy.get(`[data-cy=ingridient-643d69a5c3f7b9001cfa0941]`);// Биокотлета из марсианской Магнолии
-    const ingidient2 = cy.get(`[data-cy=ingridient-643d69a5c3f7b9001cfa093e]`);// Филе Люминесцентного тетраодонтимформа
-
-    ingidient1.find('button').click();
-    ingidient2.find('button').click();
+    getIngridientButton(cutletId).click();
+    getIngridientButton(filletId).click();
 
     cy.get(`[data-cy=no-bun]`).should("have.length", 2);
     cy.get(`[data-cy=no-bun]`).eq(0).contains("Биокотлета из марсианской Магнолии");
@@ -50,7 +57,7 @@ describe('проверяем добавление ингредиента из с
 
   it('открытие модалки, детальное описание', () => {
     cy.visit('http://localhost:4000/');
-    const ingidient1 = cy.get(`[data-cy=ingridient-643d69a5c3f7b9001cfa0941]`);// Биокотлета из марсианской Магнолии
+    const ingidient1 = cy.get(`[data-cy=ingridient-${cutletId}]`);
     ingidient1.find('a').click();
 
     cy
@@ -60,14 +67,14 @@ describe('проверяем добавление ингредиента из с
   })
 
   it('детальное описание по прямой ссылке открывается без модалки', () => {
-    cy.visit('http://localhost:4000/ingredients/643d69a5c3f7b9001cfa093e');
+    cy.visit(`http://localhost:4000/ingredients/${filletId}`);
     cy.get(`[data-cy=modal]`).should('not.exist');
     cy.get(`[data-cy=ingidientDetail]`).contains('Филе Люминесцентного тетраодонтимформа');
   })
 
   it('закрытие модалки на крестик', () => {
     cy.visit('http://localhost:4000/');
-    const ingidient1 = cy.get(`[data-cy=ingridient-643d69a5c3f7b9001cfa0941]`);// Биокотлета из марсианской Магнолии
+    const ingidient1 = cy.get(`[data-cy=ingridient-${cutletId}]`);
     ingidient1.find('a').click();
     const buttonClose = cy.get(`[data-cy=button-close]`);
     buttonClose.click();
@@ -75,12 +82,28 @@ describe('проверяем добавление ингредиента из с
   })
   it('закрытие модалки кликом на оверлей', () => {
     cy.visit('http://localhost:4000/');
-    const ingidient1 = cy.get(`[data-cy=ingridient-643d69a5c3f7b9001cfa0941]`);// Биокотлета из марсианской Магнолии
+    const ingidient1 = cy.get(`[data-cy=ingridient-${cutletId}]`);
     ingidient1.find('a').click();
     const overlay = cy.get(`[data-cy=overlay]`);
     overlay.click({ force: true });
     cy.get(`[data-cy=modal]`).should('not.exist');
   })
-
 })
+
+describe('тест на запрос данных пользователя и заказа', () => {
+  before(() => setupFakeApi())
+  it('собираем заказ в конструкторе бургера', () => {
+    setCookie('accessToken', 'popa');
+
+    cy.visit('http://localhost:4000/');
+
+    getIngridientButton(cratorBunId).click();
+    getIngridientButton(cutletId).click();
+    getIngridientButton(filletId).click();
+
+    const buttonOrder = cy.get(`[data-cy=button-order]`);
+    buttonOrder.find('button').click();
+  });
+});
+
 
