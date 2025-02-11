@@ -176,4 +176,5 @@ export const {
   deleteIngridient,
   closeOrderModal
 } = burgerSlice.actions;
+
 export const burgerReducer = burgerSlice.reducer;

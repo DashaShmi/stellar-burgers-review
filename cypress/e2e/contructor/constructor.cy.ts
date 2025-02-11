@@ -18,7 +18,7 @@ function getIngridientButton(ingridientId: string): Cypress.Chainable<JQuery<HTM
 }
 
 describe('проверяем проверяем доступность приложения', function () {
-  before(() => setupFakeApi());
+  beforeEach(() => setupFakeApi());
 
   it('сервис должен быть доступен по адресу localhost:4000', function () {
     cy.visit('http://localhost:4000/');
@@ -26,7 +26,7 @@ describe('проверяем проверяем доступность прил�
 });
 
 describe('проверяем добавление ингредиента из списка в конструктор', () => {
-  before(() => setupFakeApi())
+  beforeEach(() => setupFakeApi())
 
   it('после клика на "добавить" текст в булке изменился', () => {
     cy.visit('http://localhost:4000/');
@@ -90,20 +90,42 @@ describe('проверяем добавление ингредиента из с
   })
 })
 
-describe('тест на запрос данных пользователя и заказа', () => {
-  before(() => setupFakeApi())
+describe('тест на запрос данных пользователя и заказа, Проверяется, что модальное окно открылось и номер заказа верный', () => {
+  beforeEach(() => setupFakeApi())
+
   it('собираем заказ в конструкторе бургера', () => {
     setCookie('accessToken', 'popa');
 
     cy.visit('http://localhost:4000/');
-
     getIngridientButton(cratorBunId).click();
     getIngridientButton(cutletId).click();
     getIngridientButton(filletId).click();
 
     const buttonOrder = cy.get(`[data-cy=button-order]`);
     buttonOrder.find('button').click();
+
+    cy
+      .get(`[data-cy=modal]`).find(`[data-cy=orderDetail]`)
+      .contains('67937');
   });
+
+  it('Закрывается модальное окно и проверяется успешность закрытия.', () => {
+    setCookie('accessToken', 'popa');
+
+    cy.visit('http://localhost:4000/');
+    getIngridientButton(cratorBunId).click();
+    getIngridientButton(cutletId).click();
+    getIngridientButton(filletId).click();
+
+    const buttonOrder = cy.get(`[data-cy=button-order]`);
+    buttonOrder.find('button').click();
+    const buttonClose = cy.get(`[data-cy=button-close]`);
+    buttonClose.click();
+    cy.get(`[data-cy=modal]`).should('not.exist');
+
+    const bunСhooseTop = cy.get(`[data-cy=bun-сhooseTop]`);
+    bunСhooseTop.contains('Выберите булки');
+  })
 });
 
 
