@@ -1,5 +1,7 @@
 import { expect, test, describe } from '@jest/globals';
 
+import { JSDOM } from "jsdom"
+
 import {
   addIngridient,
   burgerReducer,
@@ -8,7 +10,8 @@ import {
   moveDown,
   setBun,
   getIngredientsApiThunk,
-  getFeedsApiThunk
+  getFeedsApiThunk,
+  orderBurgerApiThunk
 } from './burger-slice';
 import { TConstructorIngredient, TIngredient, TOrder } from '../../utils/types';
 import { configureStore } from '@reduxjs/toolkit';
@@ -270,5 +273,129 @@ describe('тесты синхронных экшенов', () => {
       expect(newState2.burger.feed).toEqual(expectedResult);
       expect(newState2.burger.isLoading).toEqual(false);
     })
+
+    test('тест загрузки заказа rejected', async () => {
+      const expectedResult = {
+        orders: [],
+        total: 0,
+        totalToday: 0
+      };
+
+      global.fetch = jest.fn(() =>
+        Promise.reject("popa")
+      ) as jest.Mock;
+
+      const store = configureStore({
+        reducer: { burger: burgerReducer }
+      });
+
+      const dispatchPromise = store.dispatch(getFeedsApiThunk());
+      const newState1 = store.getState();
+      // ...если тут проверим, должен быть загрузка
+      expect(newState1.burger.isLoading).toEqual(true);
+      // ждем завершения санки
+      await dispatchPromise;
+
+      const newState2 = store.getState();
+
+      expect(newState2.burger.feed).toEqual(expectedResult);
+      expect(newState2.burger.isLoading).toEqual(false);
+    })
+
+    const orderResponse = {
+      "success": true,
+      "name": "Краторный био-марсианский бургер",
+      "order": {
+        "ingredients": [
+          {
+            "_id": "643d69a5c3f7b9001cfa093c",
+            "name": "Краторная булка N-200i",
+            "type": "bun",
+            "proteins": 80,
+            "fat": 24,
+            "carbohydrates": 53,
+            "calories": 420,
+            "price": 1255,
+            "image": "https://code.s3.yandex.net/react/code/bun-02.png",
+            "image_mobile": "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
+            "image_large": "https://code.s3.yandex.net/react/code/bun-02-large.png",
+            "__v": 0
+          },
+          {
+            "_id": "643d69a5c3f7b9001cfa0941",
+            "name": "Биокотлета из марсианской Магнолии",
+            "type": "main",
+            "proteins": 420,
+            "fat": 142,
+            "carbohydrates": 242,
+            "calories": 4242,
+            "price": 424,
+            "image": "https://code.s3.yandex.net/react/code/meat-01.png",
+            "image_mobile": "https://code.s3.yandex.net/react/code/meat-01-mobile.png",
+            "image_large": "https://code.s3.yandex.net/react/code/meat-01-large.png",
+            "__v": 0
+          },
+          {
+            "_id": "643d69a5c3f7b9001cfa093c",
+            "name": "Краторная булка N-200i",
+            "type": "bun",
+            "proteins": 80,
+            "fat": 24,
+            "carbohydrates": 53,
+            "calories": 420,
+            "price": 1255,
+            "image": "https://code.s3.yandex.net/react/code/bun-02.png",
+            "image_mobile": "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
+            "image_large": "https://code.s3.yandex.net/react/code/bun-02-large.png",
+            "__v": 0
+          }
+        ],
+        "_id": "67acc38d133acd001be50724",
+        "owner": {
+          "name": "Зак Фигзак",
+          "email": "ulmer.morozov@gmail.com",
+          "createdAt": "2025-01-06T18:59:38.711Z",
+          "updatedAt": "2025-01-06T19:06:40.834Z"
+        },
+        "status": "done",
+        "name": "Краторный био-марсианский бургер",
+        "createdAt": "2025-02-12T15:51:41.544Z",
+        "updatedAt": "2025-02-12T15:51:42.218Z",
+        "number": 68259,
+        "price": 2934
+      }
+    }
+
+    test('тест отправки заказа fulfilled', async () => {
+      const dom = new JSDOM()
+
+      global.document = dom.window.document
+
+      global.fetch = jest.fn(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(orderResponse)
+        })
+      ) as jest.Mock;
+
+      const store = configureStore({
+        reducer: { burger: burgerReducer }
+      });
+
+      const dispatchPromise = store.dispatch(orderBurgerApiThunk([fakeIngridient._id]));
+
+      const newState1 = store.getState();
+      // ...если тут проверим, должна быть загрузка
+      expect(newState1.burger.orderRequest).toEqual(true);
+      // ждем завершения санки
+      const a = await dispatchPromise;
+
+      console.log(a);
+      const newState2 = store.getState();
+
+      // expect(newState2.burger.feed).toEqual(expectedResult);
+      expect(newState2.burger.orderRequest).toEqual(false);
+    })
+
   })
 });
