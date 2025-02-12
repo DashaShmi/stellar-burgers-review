@@ -3,7 +3,7 @@ import {
   getIngredientsApi,
   getOrderByNumberApi,
   orderBurgerApi
-} from '../../utils/burger-api';
+} from '@api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 
@@ -101,10 +101,7 @@ export const burgerSlice = createSlice({
       ingridients[index] = nextItem;
     },
 
-    deleteIngridient: (
-      state,
-      action: PayloadAction<{ id: string; }>
-    ) => {
+    deleteIngridient: (state, action: PayloadAction<{ id: string }>) => {
       const ingridients = state.constructorItems.ingredients;
 
       const index = ingridients.findIndex((x) => x.id === action.payload.id);

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1739292159840" clover="3.2.0">
-  <project timestamp="1739292159840" name="All files">
-    <metrics statements="462" coveredstatements="223" conditionals="4" coveredconditionals="4" methods="30" coveredmethods="3" elements="496" coveredelements="230" complexity="0" loc="462" ncloc="462" packages="2" files="3" classes="3"/>
+<coverage generated="1739356339099" clover="3.2.0">
+  <project timestamp="1739356339099" name="All files">
+    <metrics statements="462" coveredstatements="239" conditionals="10" coveredconditionals="8" methods="30" coveredmethods="5" elements="502" coveredelements="252" complexity="0" loc="462" ncloc="462" packages="2" files="3" classes="3"/>
     <package name="services.slices">
-      <metrics statements="180" coveredstatements="136" conditionals="4" coveredconditionals="4" methods="12" coveredmethods="3"/>
+      <metrics statements="180" coveredstatements="152" conditionals="10" coveredconditionals="8" methods="12" coveredmethods="5"/>
       <file name="burger-slice.ts" path="/Users/shmizha/Documents/repos/stellar-burgers-review/src/services/slices/burger-slice.ts">
-        <metrics statements="180" coveredstatements="136" conditionals="4" coveredconditionals="4" methods="12" coveredmethods="3"/>
+        <metrics statements="180" coveredstatements="152" conditionals="10" coveredconditionals="8" methods="12" coveredmethods="5"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -83,30 +83,30 @@
         <line num="75" count="1" type="stmt"/>
         <line num="76" count="0" type="stmt"/>
         <line num="77" count="1" type="stmt"/>
-        <line num="78" count="1" type="stmt"/>
-        <line num="79" count="0" type="stmt"/>
-        <line num="80" count="0" type="stmt"/>
-        <line num="81" count="0" type="stmt"/>
-        <line num="82" count="0" type="stmt"/>
-        <line num="83" count="0" type="stmt"/>
+        <line num="78" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="79" count="1" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="81" count="1" type="stmt"/>
+        <line num="82" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="83" count="1" type="cond" truecount="0" falsecount="1"/>
         <line num="84" count="0" type="stmt"/>
         <line num="85" count="0" type="stmt"/>
-        <line num="86" count="0" type="stmt"/>
-        <line num="87" count="0" type="stmt"/>
-        <line num="88" count="0" type="stmt"/>
+        <line num="86" count="1" type="stmt"/>
+        <line num="87" count="1" type="stmt"/>
+        <line num="88" count="1" type="stmt"/>
         <line num="89" count="1" type="stmt"/>
         <line num="90" count="1" type="stmt"/>
-        <line num="91" count="1" type="stmt"/>
-        <line num="92" count="0" type="stmt"/>
-        <line num="93" count="0" type="stmt"/>
-        <line num="94" count="0" type="stmt"/>
-        <line num="95" count="0" type="stmt"/>
-        <line num="96" count="0" type="stmt"/>
+        <line num="91" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="92" count="1" type="stmt"/>
+        <line num="93" count="1" type="stmt"/>
+        <line num="94" count="1" type="stmt"/>
+        <line num="95" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="96" count="1" type="cond" truecount="0" falsecount="1"/>
         <line num="97" count="0" type="stmt"/>
         <line num="98" count="0" type="stmt"/>
-        <line num="99" count="0" type="stmt"/>
-        <line num="100" count="0" type="stmt"/>
-        <line num="101" count="0" type="stmt"/>
+        <line num="99" count="1" type="stmt"/>
+        <line num="100" count="1" type="stmt"/>
+        <line num="101" count="1" type="stmt"/>
         <line num="102" count="1" type="stmt"/>
         <line num="103" count="1" type="stmt"/>
         <line num="104" count="1" type="cond" truecount="1" falsecount="0"/>
