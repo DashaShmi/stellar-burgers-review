@@ -6,40 +6,43 @@ import {
   deleteIngridient,
   moveUp,
   moveDown,
-  setBun
+  setBun,
+  getIngredientsApiThunk
 } from './burger-slice';
 import { TConstructorIngredient, TIngredient } from '../../utils/types';
+import { configureStore } from '@reduxjs/toolkit';
+
+const fakeIngridient: TConstructorIngredient = {
+  _id: '_fakeId1',
+  name: 'лук жаренный',
+  type: 'тип',
+  proteins: 4,
+  fat: 6,
+  carbohydrates: 14,
+  calories: 68,
+  price: 240,
+  image: 'картинка',
+  image_large: 'картинка биг',
+  image_mobile: '',
+  id: 'fakeIng1'
+};
+
+const fakeIngridient2: TConstructorIngredient = {
+  _id: '_fakeId2',
+  name: 'картошечка',
+  type: 'тиап',
+  proteins: 3,
+  fat: 46,
+  carbohydrates: 144,
+  calories: 8,
+  price: 450,
+  image: 'картинкаа',
+  image_large: 'картинка бииг',
+  image_mobile: '',
+  id: 'fakeIng2'
+};
 
 describe('тесты синхронных экшенов', () => {
-  const fakeIngridient: TConstructorIngredient = {
-    _id: '_fakeId1',
-    name: 'лук жаренный',
-    type: 'тип',
-    proteins: 4,
-    fat: 6,
-    carbohydrates: 14,
-    calories: 68,
-    price: 240,
-    image: 'картинка',
-    image_large: 'картинка биг',
-    image_mobile: '',
-    id: 'fakeIng1'
-  };
-
-  const fakeIngridient2: TConstructorIngredient = {
-    _id: '_fakeId2',
-    name: 'картошечка',
-    type: 'тиап',
-    proteins: 3,
-    fat: 46,
-    carbohydrates: 144,
-    calories: 8,
-    price: 450,
-    image: 'картинкаа',
-    image_large: 'картинка бииг',
-    image_mobile: '',
-    id: 'fakeIng2'
-  };
 
   test('обработка экшена добавления ингредиента', () => {
     const initialState = {
@@ -167,4 +170,38 @@ describe('тесты синхронных экшенов', () => {
       fakeIngridient
     ]);
   });
+
+  describe('тест асинхронных экшенов', () => {
+    beforeAll(() => {
+      // process.env.BURGER_API_URL = "";
+    })
+
+    test('тест загрузки ингредиентов', async () => {
+      const expectedResult = [fakeIngridient, fakeIngridient2];
+
+      global.fetch = jest.fn(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ success: true, data: expectedResult }),
+        })
+      ) as jest.Mock;
+
+      const store = configureStore({
+        reducer: { burger: burgerReducer }
+      });
+
+      const dispatchPromise = store.dispatch(getIngredientsApiThunk());
+      const newState1 = store.getState();
+      // ...если тут проверим, должен быть загрузка
+      expect(newState1.burger.isLoading).toEqual(true);
+      // ждем завершения санки
+      await dispatchPromise;
+
+      const newState2 = store.getState();
+
+      expect(newState2.burger.ingredients).toEqual(expectedResult);
+      expect(newState2.burger.isLoading).toEqual(false);
+
+    })
+  })
 });
