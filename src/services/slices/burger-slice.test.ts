@@ -7,10 +7,12 @@ import {
   moveUp,
   moveDown,
   setBun,
-  getIngredientsApiThunk
+  getIngredientsApiThunk,
+  getFeedsApiThunk
 } from './burger-slice';
-import { TConstructorIngredient, TIngredient } from '../../utils/types';
+import { TConstructorIngredient, TIngredient, TOrder } from '../../utils/types';
 import { configureStore } from '@reduxjs/toolkit';
+import { TFeedsResponse } from '../../utils/burger-api';
 
 const fakeIngridient: TConstructorIngredient = {
   _id: '_fakeId1',
@@ -41,6 +43,16 @@ const fakeIngridient2: TConstructorIngredient = {
   image_mobile: '',
   id: 'fakeIng2'
 };
+
+const fakeOrder: TOrder = {
+  _id: "id fake_1",
+  status: "fake status",
+  name: "fake name",
+  createdAt: "fake createdAt",
+  updatedAt: "fake updatedAt",
+  number: 23,
+  ingredients: [fakeIngridient.id]
+}
 
 describe('тесты синхронных экшенов', () => {
 
@@ -192,7 +204,7 @@ describe('тесты синхронных экшенов', () => {
 
       const dispatchPromise = store.dispatch(getIngredientsApiThunk());
       const newState1 = store.getState();
-      // ...если тут проверим, должен быть загрузка
+      // ...если тут проверим, должна быть загрузка
       expect(newState1.burger.isLoading).toEqual(true);
       // ждем завершения санки
       await dispatchPromise;
@@ -226,6 +238,37 @@ describe('тесты синхронных экшенов', () => {
       expect(newState2.burger.ingredients).toEqual(expectedResult);
       expect(newState2.burger.isLoading).toEqual(false);
 
+    })
+
+    test('тест загрузки заказа fulfilled', async () => {
+      const expectedResult = {
+        success: true,
+        orders: [fakeOrder],
+        total: 55,
+        totalToday: 23
+      };
+
+      global.fetch = jest.fn(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(expectedResult)
+        })
+      ) as jest.Mock;
+
+      const store = configureStore({
+        reducer: { burger: burgerReducer }
+      });
+
+      const dispatchPromise = store.dispatch(getFeedsApiThunk());
+      const newState1 = store.getState();
+      // ...если тут проверим, должна быть загрузка
+      expect(newState1.burger.isLoading).toEqual(true);
+      // ждем завершения санки
+      await dispatchPromise;
+      const newState2 = store.getState();
+
+      expect(newState2.burger.feed).toEqual(expectedResult);
+      expect(newState2.burger.isLoading).toEqual(false);
     })
   })
 });
