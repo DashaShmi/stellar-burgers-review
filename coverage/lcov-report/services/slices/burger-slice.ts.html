@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">84.44% </span>
+                <span class="strong">84.74% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>152/180</span>
+                <span class='fraction'>150/177</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">81.81% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/10</span>
+                <span class='fraction'>9/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">41.66% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/12</span>
+                <span class='fraction'>6/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">84.44% </span>
+                <span class="strong">84.74% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>152/180</span>
+                <span class='fraction'>150/177</span>
             </div>
         
             
@@ -240,9 +240,15 @@
 <a name='L175'></a><a href='#L175'>175</a>
 <a name='L176'></a><a href='#L176'>176</a>
 <a name='L177'></a><a href='#L177'>177</a>
-<a name='L178'></a><a href='#L178'>178</a>
-<a name='L179'></a><a href='#L179'>179</a>
-<a name='L180'></a><a href='#L180'>180</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L178'></a><a href='#L178'>178</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -318,14 +324,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -340,9 +338,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -421,7 +416,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import {
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {
   getFeedsApi,
   getIngredientsApi,
   getOrderByNumberApi,
@@ -495,8 +491,8 @@ export const burgerSlice = createSlice({
     addIngridient: (state, action: PayloadAction&lt;TConstructorIngredient&gt;) =&gt; {
       state.constructorItems.ingredients.push(action.payload);
     },
-    setBun: <span class="fstat-no" title="function not covered" >(state, action: PayloadAction&lt;TIngredient&gt;) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      state.constructorItems.bun = action.payload;</span>
+    setBun: (state, action: PayloadAction&lt;TIngredient&gt;) =&gt; {
+      state.constructorItems.bun = action.payload;
     },
     moveUp: (state, action: PayloadAction&lt;TConstructorIngredient&gt;) =&gt; {
       const ingridients = state.constructorItems.ingredients;
@@ -524,10 +520,7 @@ export const burgerSlice = createSlice({
       ingridients[index] = nextItem;
     },
 &nbsp;
-    deleteIngridient: (
-      state,
-      action: PayloadAction&lt;{ id: string; }&gt;
-    ) =&gt; {
+    deleteIngridient: (state, action: PayloadAction&lt;{ id: string }&gt;) =&gt; {
       const ingridients = state.constructorItems.ingredients;
 &nbsp;
       const index = ingridients.findIndex((x) =&gt; x.id === action.payload.id);
@@ -600,14 +593,15 @@ export const {
   closeOrderModal
 } = burgerSlice.actions;
 &nbsp;
-export const burgerReducer = burgerSlice.reducer;</pre></td></tr></table></pre>
+export const burgerReducer = burgerSlice.reducer;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-02-12T10:32:19.081Z
+                at 2025-02-12T11:14:45.672Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

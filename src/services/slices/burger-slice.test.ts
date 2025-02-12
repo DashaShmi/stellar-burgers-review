@@ -5,9 +5,10 @@ import {
   burgerReducer,
   deleteIngridient,
   moveUp,
-  moveDown
+  moveDown,
+  setBun
 } from './burger-slice';
-import { TConstructorIngredient } from '../../utils/types';
+import { TConstructorIngredient, TIngredient } from '../../utils/types';
 
 describe('тесты синхронных экшенов', () => {
   const fakeIngridient: TConstructorIngredient = {
@@ -60,6 +61,40 @@ describe('тесты синхронных экшенов', () => {
     const newState = burgerReducer(initialState, addIngridient(fakeIngridient));
 
     expect(newState.constructorItems.ingredients).toEqual([fakeIngridient]);
+  });
+
+  test('обработка экшена добавления булки', () => {
+    const initialState = {
+      ingredients: [],
+      isLoading: false,
+      feed: {
+        orders: [],
+        total: 0,
+        totalToday: 0
+      },
+      constructorItems: {
+        bun: null,
+        ingredients: []
+      },
+      orderRequest: false,
+      orderModalData: null
+    };
+
+    const fakeBun: TIngredient = {
+      _id: 'id_fake_bun',
+      name: 'fake bun',
+      type: '',
+      proteins: 3,
+      fat: 8,
+      carbohydrates: 67,
+      calories: 50,
+      price: 280,
+      image: "string",
+      image_large: "imgL",
+      image_mobile: "imgM"
+    };
+    const newState = burgerReducer(initialState, setBun(fakeBun))
+    expect(newState.constructorItems.bun).toEqual(fakeBun);
   });
 
   test('обработка экшена удаления ингредиента', () => {
