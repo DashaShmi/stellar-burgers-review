@@ -176,7 +176,7 @@ describe('тесты синхронных экшенов', () => {
       // process.env.BURGER_API_URL = "";
     })
 
-    test('тест загрузки ингредиентов', async () => {
+    test('тест загрузки ингредиентов fulfilled', async () => {
       const expectedResult = [fakeIngridient, fakeIngridient2];
 
       global.fetch = jest.fn(() =>
@@ -184,6 +184,30 @@ describe('тесты синхронных экшенов', () => {
           ok: true,
           json: () => Promise.resolve({ success: true, data: expectedResult }),
         })
+      ) as jest.Mock;
+
+      const store = configureStore({
+        reducer: { burger: burgerReducer }
+      });
+
+      const dispatchPromise = store.dispatch(getIngredientsApiThunk());
+      const newState1 = store.getState();
+      // ...если тут проверим, должен быть загрузка
+      expect(newState1.burger.isLoading).toEqual(true);
+      // ждем завершения санки
+      await dispatchPromise;
+
+      const newState2 = store.getState();
+
+      expect(newState2.burger.ingredients).toEqual(expectedResult);
+      expect(newState2.burger.isLoading).toEqual(false);
+    })
+
+    test('тест загрузки ингредиентов rejected', async () => {
+      const expectedResult: unknown[] = [];
+
+      global.fetch = jest.fn(() =>
+        Promise.reject("popa")
       ) as jest.Mock;
 
       const store = configureStore({
