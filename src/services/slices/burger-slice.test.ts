@@ -57,6 +57,20 @@ const fakeOrder: TOrder = {
   ingredients: [fakeIngridient.id]
 }
 
+const fakeBun: TIngredient = {
+  _id: 'id_fake_bun',
+  name: 'fake bun',
+  type: '',
+  proteins: 3,
+  fat: 8,
+  carbohydrates: 67,
+  calories: 50,
+  price: 280,
+  image: "string",
+  image_large: "imgL",
+  image_mobile: "imgM"
+};
+
 describe('тесты синхронных экшенов', () => {
 
   test('обработка экшена добавления ингредиента', () => {
@@ -98,19 +112,6 @@ describe('тесты синхронных экшенов', () => {
       orderModalData: null
     };
 
-    const fakeBun: TIngredient = {
-      _id: 'id_fake_bun',
-      name: 'fake bun',
-      type: '',
-      proteins: 3,
-      fat: 8,
-      carbohydrates: 67,
-      calories: 50,
-      price: 280,
-      image: "string",
-      image_large: "imgL",
-      image_mobile: "imgM"
-    };
     const newState = burgerReducer(initialState, setBun(fakeBun))
     expect(newState.constructorItems.bun).toEqual(fakeBun);
   });
@@ -274,7 +275,7 @@ describe('тесты синхронных экшенов', () => {
       expect(newState2.burger.isLoading).toEqual(false);
     })
 
-    test('тест загрузки заказа rejected', async () => {
+    test('тест загрузки заказа rejected/pending', async () => {
       const expectedResult = {
         orders: [],
         total: 0,
@@ -367,9 +368,75 @@ describe('тесты синхронных экшенов', () => {
     }
 
     test('тест отправки заказа fulfilled', async () => {
-      const dom = new JSDOM()
+      const dom = new JSDOM();
+      global.document = dom.window.document;
 
-      global.document = dom.window.document
+      global.fetch = jest.fn(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(orderResponse)
+        })
+      ) as jest.Mock;
+
+      const store = configureStore({
+        reducer: { burger: burgerReducer }
+      });
+      const dispatchPromise = store.dispatch(orderBurgerApiThunk([fakeIngridient._id]));
+      const newState1 = store.getState();
+      // ...если тут проверим, должна быть загрузка
+      expect(newState1.burger.orderRequest).toEqual(true);
+      // ждем завершения санки
+      const a = await dispatchPromise;
+      console.log(a);
+      const newState2 = store.getState();
+      expect(newState2.burger.orderRequest).toEqual(false);
+      expect(newState2.burger.orderModalData).toEqual(orderResponse.order);
+    })
+
+    test('тест на очищение бургера после заказа', async () => {
+      const dom = new JSDOM();
+      global.document = dom.window.document;
+
+      const initialState = {
+        ingredients: [],
+        isLoading: false,
+        feed: {
+          orders: [],
+          total: 0,
+          totalToday: 0
+        },
+        constructorItems: {
+          bun: fakeBun,
+          ingredients: [fakeIngridient, fakeIngridient2]
+        },
+        orderRequest: false,
+        orderModalData: null
+      }
+
+      global.fetch = jest.fn(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(orderResponse)
+        })
+      ) as jest.Mock;
+
+      const store = configureStore({
+        reducer: { burger: burgerReducer },
+        preloadedState: {
+          burger: initialState,
+        }
+      });
+
+      await store.dispatch(orderBurgerApiThunk([fakeIngridient._id]));
+
+      const newState = store.getState();
+      expect(newState.burger.constructorItems.bun).toEqual(null);
+      expect(newState.burger.constructorItems.ingredients).toEqual([])
+    })
+
+    test('тест отправки заказа rejected/pending', async () => {
+      const dom = new JSDOM();
+      global.document = dom.window.document;
 
       global.fetch = jest.fn(() =>
         Promise.resolve({
@@ -383,17 +450,11 @@ describe('тесты синхронных экшенов', () => {
       });
 
       const dispatchPromise = store.dispatch(orderBurgerApiThunk([fakeIngridient._id]));
-
       const newState1 = store.getState();
-      // ...если тут проверим, должна быть загрузка
       expect(newState1.burger.orderRequest).toEqual(true);
-      // ждем завершения санки
-      const a = await dispatchPromise;
-
-      console.log(a);
+      await dispatchPromise;
       const newState2 = store.getState();
 
-      // expect(newState2.burger.feed).toEqual(expectedResult);
       expect(newState2.burger.orderRequest).toEqual(false);
     })
 

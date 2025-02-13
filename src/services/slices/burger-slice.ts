@@ -147,9 +147,7 @@ export const burgerSlice = createSlice({
       state.orderModalData = action.payload.order;
       state.constructorItems.bun = null;
       state.constructorItems.ingredients.splice(
-        0,
-        state.constructorItems.ingredients.length
-      );
+        0, state.constructorItems.ingredients.length);
     });
     //getOrderByNumberApiThunk
     builder.addCase(getOrderByNumberApiThunk.pending, (state) => {
