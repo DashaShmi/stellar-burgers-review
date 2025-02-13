@@ -11,7 +11,8 @@ import {
   setBun,
   getIngredientsApiThunk,
   getFeedsApiThunk,
-  orderBurgerApiThunk
+  orderBurgerApiThunk,
+  getOrderByNumberApiThunk
 } from './burger-slice';
 import { TConstructorIngredient, TIngredient, TOrder } from '../../utils/types';
 import { configureStore } from '@reduxjs/toolkit';
@@ -428,7 +429,6 @@ describe('тесты синхронных экшенов', () => {
       });
 
       await store.dispatch(orderBurgerApiThunk([fakeIngridient._id]));
-
       const newState = store.getState();
       expect(newState.burger.constructorItems.bun).toEqual(null);
       expect(newState.burger.constructorItems.ingredients).toEqual([])
@@ -454,8 +454,76 @@ describe('тесты синхронных экшенов', () => {
       expect(newState1.burger.orderRequest).toEqual(true);
       await dispatchPromise;
       const newState2 = store.getState();
-
       expect(newState2.burger.orderRequest).toEqual(false);
+    })
+
+
+    test('тест на получение заказа по номеру заказа (не id) fulfilled', async () => {
+      const fakeOrderId = 12345;
+
+      const fakeOrderResponseByNumber =
+      {
+        "success": true,
+        "orders": [
+          {
+            "_id": "67ade227133acd001be50a0f",
+            "ingredients": [
+              "643d69a5c3f7b9001cfa093d",
+              "643d69a5c3f7b9001cfa0942",
+              "643d69a5c3f7b9001cfa093d"
+            ],
+            "owner": "675c4672750864001d371042",
+            "status": "done",
+            "name": "Флюоресцентный spicy бургер",
+            "createdAt": "2025-02-13T12:14:31.973Z",
+            "updatedAt": "2025-02-13T12:14:32.651Z",
+            "number": 68333,
+            "__v": 0
+          }
+        ]
+      }
+      global.fetch = jest.fn(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(fakeOrderResponseByNumber),
+        })
+      ) as jest.Mock;
+
+      const store = configureStore({
+        reducer: { burger: burgerReducer }
+      });
+
+      const dispatchPromise = store.dispatch(getOrderByNumberApiThunk(fakeOrderId));
+      const newState1 = store.getState();
+      expect(newState1.burger.isLoading).toEqual(true);
+      // ждем завершения санки
+      await dispatchPromise;
+      const newState = store.getState();
+      expect(newState.burger.orderModalData).toEqual(fakeOrderResponseByNumber.orders[0]);
+      expect(newState.burger.isLoading).toEqual(false);
+    })
+
+    test('тест на получение заказа по номеру заказа (не id) rejected', async () => {
+      const fakeOrderId = 12345;
+
+      global.fetch = jest.fn(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.reject("popa"),
+        })
+      ) as jest.Mock;
+
+      const store = configureStore({
+        reducer: { burger: burgerReducer }
+      });
+
+      const dispatchPromise = store.dispatch(getOrderByNumberApiThunk(fakeOrderId));
+      const newState1 = store.getState();
+      expect(newState1.burger.isLoading).toEqual(true);
+      // ждем завершения санки
+      await dispatchPromise;
+      const newState = store.getState();
+      expect(newState.burger.isLoading).toEqual(false);
     })
 
   })
