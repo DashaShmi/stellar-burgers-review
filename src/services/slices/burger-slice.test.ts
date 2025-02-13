@@ -189,9 +189,6 @@ describe('тесты синхронных экшенов', () => {
   });
 
   describe('тест асинхронных экшенов', () => {
-    beforeAll(() => {
-      // process.env.BURGER_API_URL = "";
-    })
 
     test('тест загрузки ингредиентов fulfilled', async () => {
       const expectedResult = [fakeIngridient, fakeIngridient2];
@@ -388,7 +385,7 @@ describe('тесты синхронных экшенов', () => {
       expect(newState1.burger.orderRequest).toEqual(true);
       // ждем завершения санки
       const a = await dispatchPromise;
-      console.log(a);
+      // console.log(a);
       const newState2 = store.getState();
       expect(newState2.burger.orderRequest).toEqual(false);
       expect(newState2.burger.orderModalData).toEqual(orderResponse.order);
