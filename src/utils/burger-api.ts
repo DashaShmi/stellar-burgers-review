@@ -77,7 +77,7 @@ export const getIngredientsApi = () =>
     .then((data) => {
       if (data?.success) return data.data;
 
-      return Promise.reject("хули не success");
+      return Promise.reject('хули не success');
     });
 
 export const getFeedsApi = () =>

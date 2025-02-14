@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">61.86% </span>
+                <span class="strong">66.52% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>146/236</span>
+                <span class='fraction'>157/236</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">64.28% </span>
+                <span class="strong">63.63% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>18/28</span>
+                <span class='fraction'>21/33</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">46.66% </span>
+                <span class="strong">53.33% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>7/15</span>
+                <span class='fraction'>8/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">61.86% </span>
+                <span class="strong">66.52% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>146/236</span>
+                <span class='fraction'>157/236</span>
             </div>
         
             
@@ -305,7 +305,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -465,18 +465,18 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -614,7 +614,7 @@ export const getIngredientsApi = () =&gt;
     .then((data) =&gt; {
       if (data<span class="branch-0 cbranch-no" title="branch not covered" >?.s</span>uccess) return data.data;
 <span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" >      return Promise.reject("хули не success");</span>
+<span class="cstat-no" title="statement not covered" >      return Promise.reject('хули не success');</span>
     });
 &nbsp;
 export const getFeedsApi = () =&gt;
@@ -700,19 +700,19 @@ export type TLoginData = {
   password: string;
 };
 &nbsp;
-export const loginUserApi = <span class="fstat-no" title="function not covered" >(data: TLoginData) =&gt;</span>
-<span class="cstat-no" title="statement not covered" >  fetch(`${URL}/auth/login`, {</span>
-<span class="cstat-no" title="statement not covered" >    method: 'POST',</span>
-<span class="cstat-no" title="statement not covered" >    headers: {</span>
-<span class="cstat-no" title="statement not covered" >      'Content-Type': 'application/json;charset=utf-8'</span>
-<span class="cstat-no" title="statement not covered" >    },</span>
-<span class="cstat-no" title="statement not covered" >    body: JSON.stringify(data)</span>
-<span class="cstat-no" title="statement not covered" >  })</span>
-<span class="cstat-no" title="statement not covered" >    .then((res) =&gt; checkResponse&lt;TAuthResponse&gt;(res))</span>
-<span class="cstat-no" title="statement not covered" >    .then((data) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      if (data?.success) return data;</span>
-<span class="cstat-no" title="statement not covered" >      return Promise.reject(data);</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
+export const loginUserApi = (data: TLoginData) =&gt;
+  fetch(`${URL}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify(data)
+  })
+    .then((res) =&gt; checkResponse&lt;TAuthResponse&gt;(res))
+    .then((data) =&gt; {
+      if (data<span class="branch-0 cbranch-no" title="branch not covered" >?.s</span>uccess) return data;
+<span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >      return Promise.reject(data);</span></span>
+    });
 &nbsp;
 export const forgotPasswordApi = <span class="fstat-no" title="function not covered" >(data: { email: string }) =&gt;</span>
 <span class="cstat-no" title="statement not covered" >  fetch(`${URL}/password-reset`, {</span>
@@ -778,7 +778,7 @@ export const logoutApi = <span class="fstat-no" title="function not covered" >()
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-02-14T10:23:46.444Z
+                at 2025-02-14T13:10:19.380Z
             </div>
         <script src="../prettify.js"></script>
         <script>

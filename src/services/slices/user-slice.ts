@@ -58,7 +58,7 @@ export const checkUserAuthThunk = createAsyncThunk(
   'user/checkUser',
   async (_, { dispatch }) => {
     if (getCookie('accessToken')) {
-      console.log(`куки найден: ${getCookie('accessToken')}`)
+      console.log(`куки найден: ${getCookie('accessToken')}`);
       try {
         await dispatch(getUserApiThunk());
       } catch (error) {
@@ -68,7 +68,7 @@ export const checkUserAuthThunk = createAsyncThunk(
         dispatch(authChecked());
       }
     } else {
-      console.log(`куки не найден: ${getCookie('accessToken')}`)
+      console.log(`куки не найден: ${getCookie('accessToken')}`);
       dispatch(authChecked());
     }
   }

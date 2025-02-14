@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">72.61% </span>
+                <span class="strong">77.97% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>122/168</span>
+                <span class='fraction'>131/168</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>15/15</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">72.61% </span>
+                <span class="strong">77.97% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>122/168</span>
+                <span class='fraction'>131/168</span>
             </div>
         
             
@@ -260,11 +260,11 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -363,14 +363,14 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -428,11 +428,11 @@ export const getUserApiThunk = createAsyncThunk('user/get', getUserApi);
 export const loginUserThunk = createAsyncThunk(
   'user/login',
   async (data: TLoginData) =&gt; {
-<span class="cstat-no" title="statement not covered" >    const loginUserData = await loginUserApi(data);</span>
-<span class="cstat-no" title="statement not covered" >    setCookie('accessToken', loginUserData.accessToken);</span>
-<span class="cstat-no" title="statement not covered" >    localStorage.setItem('refreshToken', loginUserData.refreshToken);</span>
-<span class="cstat-no" title="statement not covered" >    return loginUserData;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+    const loginUserData = await loginUserApi(data);
+    setCookie('accessToken', loginUserData.accessToken);
+    localStorage.setItem('refreshToken', loginUserData.refreshToken);
+    return loginUserData;
+  }
 );
 &nbsp;
 export const updateUserApiThank = createAsyncThunk(
@@ -459,7 +459,7 @@ export const checkUserAuthThunk = createAsyncThunk(
   'user/checkUser',
   async (_, { dispatch }) =&gt; {
 <span class="cstat-no" title="statement not covered" >    if (getCookie('accessToken')) {</span>
-<span class="cstat-no" title="statement not covered" >      console.log(`куки найден: ${getCookie('accessToken')}`)</span>
+<span class="cstat-no" title="statement not covered" >      console.log(`куки найден: ${getCookie('accessToken')}`);</span>
 <span class="cstat-no" title="statement not covered" >      try {</span>
 <span class="cstat-no" title="statement not covered" >        await dispatch(getUserApiThunk());</span>
 <span class="cstat-no" title="statement not covered" >      } catch (error) {</span>
@@ -469,7 +469,7 @@ export const checkUserAuthThunk = createAsyncThunk(
 <span class="cstat-no" title="statement not covered" >        dispatch(authChecked());</span>
 <span class="cstat-no" title="statement not covered" >      }</span>
 <span class="cstat-no" title="statement not covered" >    } else {</span>
-<span class="cstat-no" title="statement not covered" >      console.log(`куки не найден: ${getCookie('accessToken')}`)</span>
+<span class="cstat-no" title="statement not covered" >      console.log(`куки не найден: ${getCookie('accessToken')}`);</span>
 <span class="cstat-no" title="statement not covered" >      dispatch(authChecked());</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
@@ -511,9 +511,9 @@ export const userSlice = createSlice({
     builder.addCase(registerUserApiThunk.pending, (state) =&gt; {
       state.isLoading = true;
     });
-    // builder.addCase(registerUserApiThunk.rejected, (state) =&gt; {
-    //   state.isLoading = false;
-    // });
+    builder.addCase(registerUserApiThunk.rejected, (state) =&gt; {
+      state.isLoading = false;
+    });
     builder.addCase(registerUserApiThunk.fulfilled, (state, action) =&gt; {
       state.isLoading = false;
       state.user = action.payload.user;
@@ -531,14 +531,14 @@ export const userSlice = createSlice({
     });
     //login
     builder.addCase(loginUserThunk.pending, (state) =&gt; {
-<span class="cstat-no" title="statement not covered" >      state.isLoading = true;</span>
+      state.isLoading = true;
     });
     builder.addCase(loginUserThunk.rejected, (state) =&gt; {
-<span class="cstat-no" title="statement not covered" >      state.isLoading = false;</span>
+      state.isLoading = false;
     });
     builder.addCase(loginUserThunk.fulfilled, (state, action) =&gt; {
-<span class="cstat-no" title="statement not covered" >      state.isLoading = false;</span>
-<span class="cstat-no" title="statement not covered" >      state.user = action.payload.user;</span>
+      state.isLoading = false;
+      state.user = action.payload.user;
     });
     //getOrders
     builder.addCase(getOrdersApiThunk.pending, (state) =&gt; {
@@ -574,7 +574,7 @@ export const userReducer = userSlice.reducer;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-02-14T10:23:46.444Z
+                at 2025-02-14T13:10:19.380Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

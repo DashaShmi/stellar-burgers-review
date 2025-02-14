@@ -1,6 +1,6 @@
 import { expect, test, describe } from '@jest/globals';
 
-import { JSDOM } from "jsdom"
+import { JSDOM } from 'jsdom';
 
 import {
   addIngridient,
@@ -49,14 +49,14 @@ const fakeIngridient2: TConstructorIngredient = {
 };
 
 const fakeOrder: TOrder = {
-  _id: "id fake_1",
-  status: "fake status",
-  name: "fake name",
-  createdAt: "fake createdAt",
-  updatedAt: "fake updatedAt",
+  _id: 'id fake_1',
+  status: 'fake status',
+  name: 'fake name',
+  createdAt: 'fake createdAt',
+  updatedAt: 'fake updatedAt',
   number: 23,
   ingredients: [fakeIngridient.id]
-}
+};
 
 const fakeBun: TIngredient = {
   _id: 'id_fake_bun',
@@ -67,13 +67,12 @@ const fakeBun: TIngredient = {
   carbohydrates: 67,
   calories: 50,
   price: 280,
-  image: "string",
-  image_large: "imgL",
-  image_mobile: "imgM"
+  image: 'string',
+  image_large: 'imgL',
+  image_mobile: 'imgM'
 };
 
 describe('тесты синхронных экшенов', () => {
-
   test('обработка экшена добавления ингредиента', () => {
     const initialState = {
       ingredients: [],
@@ -113,7 +112,7 @@ describe('тесты синхронных экшенов', () => {
       orderModalData: null
     };
 
-    const newState = burgerReducer(initialState, setBun(fakeBun))
+    const newState = burgerReducer(initialState, setBun(fakeBun));
     expect(newState.constructorItems.bun).toEqual(fakeBun);
   });
 
@@ -189,14 +188,13 @@ describe('тесты синхронных экшенов', () => {
   });
 
   describe('тест асинхронных экшенов', () => {
-
     test('тест загрузки ингредиентов fulfilled', async () => {
       const expectedResult = [fakeIngridient, fakeIngridient2];
 
       global.fetch = jest.fn(() =>
         Promise.resolve({
           ok: true,
-          json: () => Promise.resolve({ success: true, data: expectedResult }),
+          json: () => Promise.resolve({ success: true, data: expectedResult })
         })
       ) as jest.Mock;
 
@@ -215,14 +213,12 @@ describe('тесты синхронных экшенов', () => {
 
       expect(newState2.burger.ingredients).toEqual(expectedResult);
       expect(newState2.burger.isLoading).toEqual(false);
-    })
+    });
 
     test('тест загрузки ингредиентов rejected', async () => {
       const expectedResult: unknown[] = [];
 
-      global.fetch = jest.fn(() =>
-        Promise.reject("popa")
-      ) as jest.Mock;
+      global.fetch = jest.fn(() => Promise.reject('popa')) as jest.Mock;
 
       const store = configureStore({
         reducer: { burger: burgerReducer }
@@ -239,8 +235,7 @@ describe('тесты синхронных экшенов', () => {
 
       expect(newState2.burger.ingredients).toEqual(expectedResult);
       expect(newState2.burger.isLoading).toEqual(false);
-
-    })
+    });
 
     test('тест загрузки заказа fulfilled', async () => {
       const expectedResult = {
@@ -271,7 +266,7 @@ describe('тесты синхронных экшенов', () => {
 
       expect(newState2.burger.feed).toEqual(expectedResult);
       expect(newState2.burger.isLoading).toEqual(false);
-    })
+    });
 
     test('тест загрузки заказа rejected/pending', async () => {
       const expectedResult = {
@@ -280,9 +275,7 @@ describe('тесты синхронных экшенов', () => {
         totalToday: 0
       };
 
-      global.fetch = jest.fn(() =>
-        Promise.reject("popa")
-      ) as jest.Mock;
+      global.fetch = jest.fn(() => Promise.reject('popa')) as jest.Mock;
 
       const store = configureStore({
         reducer: { burger: burgerReducer }
@@ -299,71 +292,77 @@ describe('тесты синхронных экшенов', () => {
 
       expect(newState2.burger.feed).toEqual(expectedResult);
       expect(newState2.burger.isLoading).toEqual(false);
-    })
+    });
 
     const orderResponse = {
-      "success": true,
-      "name": "Краторный био-марсианский бургер",
-      "order": {
-        "ingredients": [
+      success: true,
+      name: 'Краторный био-марсианский бургер',
+      order: {
+        ingredients: [
           {
-            "_id": "643d69a5c3f7b9001cfa093c",
-            "name": "Краторная булка N-200i",
-            "type": "bun",
-            "proteins": 80,
-            "fat": 24,
-            "carbohydrates": 53,
-            "calories": 420,
-            "price": 1255,
-            "image": "https://code.s3.yandex.net/react/code/bun-02.png",
-            "image_mobile": "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-            "image_large": "https://code.s3.yandex.net/react/code/bun-02-large.png",
-            "__v": 0
+            _id: '643d69a5c3f7b9001cfa093c',
+            name: 'Краторная булка N-200i',
+            type: 'bun',
+            proteins: 80,
+            fat: 24,
+            carbohydrates: 53,
+            calories: 420,
+            price: 1255,
+            image: 'https://code.s3.yandex.net/react/code/bun-02.png',
+            image_mobile:
+              'https://code.s3.yandex.net/react/code/bun-02-mobile.png',
+            image_large:
+              'https://code.s3.yandex.net/react/code/bun-02-large.png',
+            __v: 0
           },
           {
-            "_id": "643d69a5c3f7b9001cfa0941",
-            "name": "Биокотлета из марсианской Магнолии",
-            "type": "main",
-            "proteins": 420,
-            "fat": 142,
-            "carbohydrates": 242,
-            "calories": 4242,
-            "price": 424,
-            "image": "https://code.s3.yandex.net/react/code/meat-01.png",
-            "image_mobile": "https://code.s3.yandex.net/react/code/meat-01-mobile.png",
-            "image_large": "https://code.s3.yandex.net/react/code/meat-01-large.png",
-            "__v": 0
+            _id: '643d69a5c3f7b9001cfa0941',
+            name: 'Биокотлета из марсианской Магнолии',
+            type: 'main',
+            proteins: 420,
+            fat: 142,
+            carbohydrates: 242,
+            calories: 4242,
+            price: 424,
+            image: 'https://code.s3.yandex.net/react/code/meat-01.png',
+            image_mobile:
+              'https://code.s3.yandex.net/react/code/meat-01-mobile.png',
+            image_large:
+              'https://code.s3.yandex.net/react/code/meat-01-large.png',
+            __v: 0
           },
           {
-            "_id": "643d69a5c3f7b9001cfa093c",
-            "name": "Краторная булка N-200i",
-            "type": "bun",
-            "proteins": 80,
-            "fat": 24,
-            "carbohydrates": 53,
-            "calories": 420,
-            "price": 1255,
-            "image": "https://code.s3.yandex.net/react/code/bun-02.png",
-            "image_mobile": "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-            "image_large": "https://code.s3.yandex.net/react/code/bun-02-large.png",
-            "__v": 0
+            _id: '643d69a5c3f7b9001cfa093c',
+            name: 'Краторная булка N-200i',
+            type: 'bun',
+            proteins: 80,
+            fat: 24,
+            carbohydrates: 53,
+            calories: 420,
+            price: 1255,
+            image: 'https://code.s3.yandex.net/react/code/bun-02.png',
+            image_mobile:
+              'https://code.s3.yandex.net/react/code/bun-02-mobile.png',
+            image_large:
+              'https://code.s3.yandex.net/react/code/bun-02-large.png',
+            __v: 0
           }
         ],
-        "_id": "67acc38d133acd001be50724",
-        "owner": {
-          "name": "Зак Фигзак",
-          "email": "ulmer.morozov@gmail.com",
-          "createdAt": "2025-01-06T18:59:38.711Z",
-          "updatedAt": "2025-01-06T19:06:40.834Z"
+        _id: '67acc38d133acd001be50724',
+        owner: {
+          name: 'Зак Фигзак',
+          email: 'ulmer.morozov@gmail.com',
+          createdAt: '2025-01-06T18:59:38.711Z',
+          updatedAt: '2025-01-06T19:06:40.834Z'
         },
-        "status": "done",
-        "name": "Краторный био-марсианский бургер",
-        "createdAt": "2025-02-12T15:51:41.544Z",
-        "updatedAt": "2025-02-12T15:51:42.218Z",
-        "number": 68259,
-        "price": 2934
+        status: 'done',
+        name: 'Краторный био-марсианский бургер',
+        createdAt: '2025-02-12T15:51:41.544Z',
+        updatedAt: '2025-02-12T15:51:42.218Z',
+        number: 68259,
+        price: 2934
       }
-    }
+    };
 
     test('тест отправки заказа fulfilled', async () => {
       const dom = new JSDOM();
@@ -379,7 +378,9 @@ describe('тесты синхронных экшенов', () => {
       const store = configureStore({
         reducer: { burger: burgerReducer }
       });
-      const dispatchPromise = store.dispatch(orderBurgerApiThunk([fakeIngridient._id]));
+      const dispatchPromise = store.dispatch(
+        orderBurgerApiThunk([fakeIngridient._id])
+      );
       const newState1 = store.getState();
       // ...если тут проверим, должна быть загрузка
       expect(newState1.burger.orderRequest).toEqual(true);
@@ -389,7 +390,7 @@ describe('тесты синхронных экшенов', () => {
       const newState2 = store.getState();
       expect(newState2.burger.orderRequest).toEqual(false);
       expect(newState2.burger.orderModalData).toEqual(orderResponse.order);
-    })
+    });
 
     test('тест на очищение бургера после заказа', async () => {
       const dom = new JSDOM();
@@ -409,7 +410,7 @@ describe('тесты синхронных экшенов', () => {
         },
         orderRequest: false,
         orderModalData: null
-      }
+      };
 
       global.fetch = jest.fn(() =>
         Promise.resolve({
@@ -421,15 +422,15 @@ describe('тесты синхронных экшенов', () => {
       const store = configureStore({
         reducer: { burger: burgerReducer },
         preloadedState: {
-          burger: initialState,
+          burger: initialState
         }
       });
 
       await store.dispatch(orderBurgerApiThunk([fakeIngridient._id]));
       const newState = store.getState();
       expect(newState.burger.constructorItems.bun).toEqual(null);
-      expect(newState.burger.constructorItems.ingredients).toEqual([])
-    })
+      expect(newState.burger.constructorItems.ingredients).toEqual([]);
+    });
 
     test('тест отправки заказа rejected/pending', async () => {
       const dom = new JSDOM();
@@ -446,43 +447,43 @@ describe('тесты синхронных экшенов', () => {
         reducer: { burger: burgerReducer }
       });
 
-      const dispatchPromise = store.dispatch(orderBurgerApiThunk([fakeIngridient._id]));
+      const dispatchPromise = store.dispatch(
+        orderBurgerApiThunk([fakeIngridient._id])
+      );
       const newState1 = store.getState();
       expect(newState1.burger.orderRequest).toEqual(true);
       await dispatchPromise;
       const newState2 = store.getState();
       expect(newState2.burger.orderRequest).toEqual(false);
-    })
-
+    });
 
     test('тест на получение заказа по номеру заказа (не id) fulfilled', async () => {
       const fakeOrderId = 12345;
 
-      const fakeOrderResponseByNumber =
-      {
-        "success": true,
-        "orders": [
+      const fakeOrderResponseByNumber = {
+        success: true,
+        orders: [
           {
-            "_id": "67ade227133acd001be50a0f",
-            "ingredients": [
-              "643d69a5c3f7b9001cfa093d",
-              "643d69a5c3f7b9001cfa0942",
-              "643d69a5c3f7b9001cfa093d"
+            _id: '67ade227133acd001be50a0f',
+            ingredients: [
+              '643d69a5c3f7b9001cfa093d',
+              '643d69a5c3f7b9001cfa0942',
+              '643d69a5c3f7b9001cfa093d'
             ],
-            "owner": "675c4672750864001d371042",
-            "status": "done",
-            "name": "Флюоресцентный spicy бургер",
-            "createdAt": "2025-02-13T12:14:31.973Z",
-            "updatedAt": "2025-02-13T12:14:32.651Z",
-            "number": 68333,
-            "__v": 0
+            owner: '675c4672750864001d371042',
+            status: 'done',
+            name: 'Флюоресцентный spicy бургер',
+            createdAt: '2025-02-13T12:14:31.973Z',
+            updatedAt: '2025-02-13T12:14:32.651Z',
+            number: 68333,
+            __v: 0
           }
         ]
-      }
+      };
       global.fetch = jest.fn(() =>
         Promise.resolve({
           ok: true,
-          json: () => Promise.resolve(fakeOrderResponseByNumber),
+          json: () => Promise.resolve(fakeOrderResponseByNumber)
         })
       ) as jest.Mock;
 
@@ -490,15 +491,19 @@ describe('тесты синхронных экшенов', () => {
         reducer: { burger: burgerReducer }
       });
 
-      const dispatchPromise = store.dispatch(getOrderByNumberApiThunk(fakeOrderId));
+      const dispatchPromise = store.dispatch(
+        getOrderByNumberApiThunk(fakeOrderId)
+      );
       const newState1 = store.getState();
       expect(newState1.burger.isLoading).toEqual(true);
       // ждем завершения санки
       await dispatchPromise;
       const newState = store.getState();
-      expect(newState.burger.orderModalData).toEqual(fakeOrderResponseByNumber.orders[0]);
+      expect(newState.burger.orderModalData).toEqual(
+        fakeOrderResponseByNumber.orders[0]
+      );
       expect(newState.burger.isLoading).toEqual(false);
-    })
+    });
 
     test('тест на получение заказа по номеру заказа (не id) rejected', async () => {
       const fakeOrderId = 12345;
@@ -506,7 +511,7 @@ describe('тесты синхронных экшенов', () => {
       global.fetch = jest.fn(() =>
         Promise.resolve({
           ok: true,
-          json: () => Promise.reject("popa"),
+          json: () => Promise.reject('popa')
         })
       ) as jest.Mock;
 
@@ -514,14 +519,15 @@ describe('тесты синхронных экшенов', () => {
         reducer: { burger: burgerReducer }
       });
 
-      const dispatchPromise = store.dispatch(getOrderByNumberApiThunk(fakeOrderId));
+      const dispatchPromise = store.dispatch(
+        getOrderByNumberApiThunk(fakeOrderId)
+      );
       const newState1 = store.getState();
       expect(newState1.burger.isLoading).toEqual(true);
       // ждем завершения санки
       await dispatchPromise;
       const newState = store.getState();
       expect(newState.burger.isLoading).toEqual(false);
-    })
-
-  })
+    });
+  });
 });
