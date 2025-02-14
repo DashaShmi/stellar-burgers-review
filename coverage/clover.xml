@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1739538619390" clover="3.2.0">
-  <project timestamp="1739538619390" name="All files">
-    <metrics statements="628" coveredstatements="496" conditionals="77" coveredconditionals="58" methods="36" coveredmethods="19" elements="741" coveredelements="573" complexity="0" loc="628" ncloc="628" packages="2" files="4" classes="4"/>
+<coverage generated="1739542120836" clover="3.2.0">
+  <project timestamp="1739542120836" name="All files">
+    <metrics statements="628" coveredstatements="508" conditionals="85" coveredconditionals="64" methods="36" coveredmethods="20" elements="749" coveredelements="592" complexity="0" loc="628" ncloc="628" packages="2" files="4" classes="4"/>
     <package name="services.slices">
-      <metrics statements="345" coveredstatements="301" conditionals="37" coveredconditionals="35" methods="18" coveredmethods="9"/>
+      <metrics statements="345" coveredstatements="305" conditionals="40" coveredconditionals="38" methods="18" coveredmethods="9"/>
       <file name="burger-slice.ts" path="/Users/shmizha/Documents/repos/stellar-burgers-review/src/services/slices/burger-slice.ts">
         <metrics statements="177" coveredstatements="170" conditionals="22" coveredconditionals="20" methods="12" coveredmethods="6"/>
         <line num="1" count="1" type="stmt"/>
@@ -185,7 +185,7 @@
         <line num="177" count="1" type="stmt"/>
       </file>
       <file name="user-slice.ts" path="/Users/shmizha/Documents/repos/stellar-burgers-review/src/services/slices/user-slice.ts">
-        <metrics statements="168" coveredstatements="131" conditionals="15" coveredconditionals="15" methods="6" coveredmethods="3"/>
+        <metrics statements="168" coveredstatements="135" conditionals="18" coveredconditionals="18" methods="6" coveredmethods="3"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -328,15 +328,15 @@
         <line num="140" count="1" type="stmt"/>
         <line num="141" count="1" type="stmt"/>
         <line num="142" count="1" type="stmt"/>
-        <line num="143" count="1" type="stmt"/>
-        <line num="144" count="0" type="stmt"/>
+        <line num="143" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="144" count="2" type="stmt"/>
         <line num="145" count="1" type="stmt"/>
-        <line num="146" count="1" type="stmt"/>
-        <line num="147" count="0" type="stmt"/>
+        <line num="146" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="147" count="1" type="stmt"/>
         <line num="148" count="1" type="stmt"/>
-        <line num="149" count="1" type="stmt"/>
-        <line num="150" count="0" type="stmt"/>
-        <line num="151" count="0" type="stmt"/>
+        <line num="149" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="150" count="1" type="stmt"/>
+        <line num="151" count="1" type="stmt"/>
         <line num="152" count="1" type="stmt"/>
         <line num="153" count="1" type="stmt"/>
         <line num="154" count="1" type="stmt"/>
@@ -357,16 +357,16 @@
       </file>
     </package>
     <package name="utils">
-      <metrics statements="283" coveredstatements="195" conditionals="40" coveredconditionals="23" methods="18" coveredmethods="10"/>
+      <metrics statements="283" coveredstatements="203" conditionals="45" coveredconditionals="26" methods="18" coveredmethods="11"/>
       <file name="burger-api.ts" path="/Users/shmizha/Documents/repos/stellar-burgers-review/src/utils/burger-api.ts">
-        <metrics statements="236" coveredstatements="157" conditionals="33" coveredconditionals="21" methods="15" coveredmethods="8"/>
+        <metrics statements="236" coveredstatements="165" conditionals="38" coveredconditionals="24" methods="15" coveredmethods="9"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="7" count="10" type="cond" truecount="0" falsecount="1"/>
+        <line num="7" count="11" type="cond" truecount="0" falsecount="1"/>
         <line num="8" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
@@ -398,26 +398,26 @@
         <line num="36" count="0" type="stmt"/>
         <line num="37" count="1" type="stmt"/>
         <line num="38" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="39" count="3" type="stmt"/>
-        <line num="40" count="3" type="stmt"/>
-        <line num="41" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="42" count="3" type="stmt"/>
-        <line num="43" count="3" type="stmt"/>
-        <line num="44" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="45" count="3" type="stmt"/>
-        <line num="46" count="3" type="stmt"/>
-        <line num="47" count="3" type="stmt"/>
-        <line num="48" count="3" type="stmt"/>
-        <line num="49" count="3" type="stmt"/>
-        <line num="50" count="3" type="stmt"/>
-        <line num="51" count="3" type="stmt"/>
-        <line num="52" count="3" type="stmt"/>
-        <line num="53" count="3" type="cond" truecount="0" falsecount="1"/>
-        <line num="54" count="3" type="stmt"/>
-        <line num="55" count="3" type="cond" truecount="0" falsecount="1"/>
-        <line num="56" count="3" type="stmt"/>
-        <line num="57" count="3" type="stmt"/>
-        <line num="58" count="3" type="stmt"/>
+        <line num="39" count="5" type="stmt"/>
+        <line num="40" count="5" type="stmt"/>
+        <line num="41" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="42" count="5" type="stmt"/>
+        <line num="43" count="5" type="stmt"/>
+        <line num="44" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="45" count="5" type="stmt"/>
+        <line num="46" count="5" type="cond" truecount="0" falsecount="1"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="5" type="stmt"/>
+        <line num="49" count="5" type="stmt"/>
+        <line num="50" count="5" type="stmt"/>
+        <line num="51" count="5" type="stmt"/>
+        <line num="52" count="5" type="stmt"/>
+        <line num="53" count="5" type="cond" truecount="0" falsecount="1"/>
+        <line num="54" count="5" type="stmt"/>
+        <line num="55" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="56" count="5" type="stmt"/>
+        <line num="57" count="5" type="stmt"/>
+        <line num="58" count="5" type="stmt"/>
         <line num="59" count="1" type="stmt"/>
         <line num="60" count="1" type="stmt"/>
         <line num="61" count="1" type="stmt"/>
@@ -450,17 +450,17 @@
         <line num="88" count="0" type="cond" truecount="0" falsecount="1"/>
         <line num="89" count="2" type="stmt"/>
         <line num="90" count="1" type="stmt"/>
-        <line num="91" count="1" type="stmt"/>
-        <line num="92" count="0" type="stmt"/>
-        <line num="93" count="0" type="stmt"/>
-        <line num="94" count="0" type="stmt"/>
-        <line num="95" count="0" type="stmt"/>
-        <line num="96" count="0" type="stmt"/>
-        <line num="97" count="0" type="stmt"/>
-        <line num="98" count="0" type="stmt"/>
-        <line num="99" count="0" type="stmt"/>
-        <line num="100" count="0" type="stmt"/>
-        <line num="101" count="0" type="stmt"/>
+        <line num="91" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="92" count="2" type="stmt"/>
+        <line num="93" count="2" type="stmt"/>
+        <line num="94" count="2" type="stmt"/>
+        <line num="95" count="2" type="stmt"/>
+        <line num="96" count="2" type="stmt"/>
+        <line num="97" count="2" type="stmt"/>
+        <line num="98" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="99" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="100" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="101" count="2" type="stmt"/>
         <line num="102" count="1" type="stmt"/>
         <line num="103" count="1" type="stmt"/>
         <line num="104" count="1" type="stmt"/>
@@ -599,17 +599,17 @@
       </file>
       <file name="cookie.ts" path="/Users/shmizha/Documents/repos/stellar-burgers-review/src/utils/cookie.ts">
         <metrics statements="47" coveredstatements="38" conditionals="7" coveredconditionals="2" methods="3" coveredmethods="2"/>
-        <line num="1" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="2" count="3" type="stmt"/>
-        <line num="3" count="3" type="stmt"/>
-        <line num="4" count="3" type="stmt"/>
-        <line num="5" count="3" type="stmt"/>
-        <line num="6" count="3" type="stmt"/>
-        <line num="7" count="3" type="stmt"/>
-        <line num="8" count="3" type="stmt"/>
-        <line num="9" count="3" type="stmt"/>
-        <line num="10" count="3" type="cond" truecount="0" falsecount="1"/>
-        <line num="11" count="3" type="stmt"/>
+        <line num="1" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="2" count="5" type="stmt"/>
+        <line num="3" count="5" type="stmt"/>
+        <line num="4" count="5" type="stmt"/>
+        <line num="5" count="5" type="stmt"/>
+        <line num="6" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
+        <line num="8" count="5" type="stmt"/>
+        <line num="9" count="5" type="stmt"/>
+        <line num="10" count="5" type="cond" truecount="0" falsecount="1"/>
+        <line num="11" count="5" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
         <line num="13" count="2" type="cond" truecount="1" falsecount="0"/>
         <line num="14" count="2" type="stmt"/>

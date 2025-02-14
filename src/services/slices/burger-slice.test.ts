@@ -268,7 +268,7 @@ describe('тесты синхронных экшенов', () => {
       expect(newState2.burger.isLoading).toEqual(false);
     });
 
-    test('тест загрузки заказа rejected/pending', async () => {
+    test('тест загрузки заказа rejected', async () => {
       const expectedResult = {
         orders: [],
         total: 0,

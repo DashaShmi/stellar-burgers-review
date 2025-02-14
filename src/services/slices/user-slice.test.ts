@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TUser } from "../../utils/types";
-import { authChecked, loginUserThunk, registerUserApiThunk, userLogout, userReducer, userState } from "./user-slice";
+import { authChecked, getOrdersApiThunk, loginUserThunk, registerUserApiThunk, userLogout, userReducer, userState } from "./user-slice";
 import { JSDOM } from "jsdom"
 import { TLoginData } from "../../utils/burger-api";
 
@@ -177,6 +177,73 @@ describe('тест асинхронных экшенов', () => {
     expect(newState2.user.user).toEqual(null);
     expect(newState2.user.isLoading).toEqual(false);
 
+  });
+
+  const orderResponse =
+  {
+    "success": true,
+    "orders": [
+      {
+        "_id": "67af46bb133acd001be50d3d",
+        "ingredients": [
+          "643d69a5c3f7b9001cfa093d",
+          "643d69a5c3f7b9001cfa093e",
+          "643d69a5c3f7b9001cfa093d"
+        ],
+        "status": "done",
+        "name": "Флюоресцентный люминесцентный бургер",
+        "createdAt": "2025-02-14T13:35:55.508Z",
+        "updatedAt": "2025-02-14T13:35:56.338Z",
+        "number": 68416
+      }
+    ],
+    "total": 68042,
+    "totalToday": 82
+  };
+
+
+  test('тест на получение заказов', async () => {
+    const dom = new JSDOM();
+    global.document = dom.window.document;
+
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(orderResponse)
+      })
+    ) as jest.Mock;
+
+    const store = configureStore({
+      reducer: { user: userReducer }
+    });
+
+    const dispatchPromise = store.dispatch(getOrdersApiThunk());
+    const newState1 = store.getState();
+    expect(newState1.user.isLoading).toEqual(true);
+    await dispatchPromise;
+    const newState2 = store.getState();
+
+    expect(newState2.user.orders).toEqual(orderResponse.orders);
+    expect(newState2.user.isLoading).toEqual(false);
+  });
+
+
+  test('тест на получение заказов rejected', async () => {
+    global.fetch = jest.fn(() => Promise.reject('popa')) as jest.Mock;
+
+    const store = configureStore({
+      reducer: { user: userReducer }
+    });
+
+    const dispatchPromise = store.dispatch(getOrdersApiThunk());
+    const newState1 = store.getState();
+    expect(newState1.user.isLoading).toEqual(true);
+    await dispatchPromise;
+    const newState2 = store.getState();
+
+    expect(newState2.user.orders).toEqual([]);
+    expect(newState2.user.isLoading).toEqual(false);
   })
+
 
 })
