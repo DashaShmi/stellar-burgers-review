@@ -39,12 +39,20 @@ describe('тест синхронных экшенов', () => {
 });
 
 describe('тест асинхронных экшенов', () => {
+
+  const fakeRegisterData =
+  {
+    email: "taksinaa@gmail.com",
+    name: "Juja",
+    password: "fake password"
+  }
   beforeEach(() => {
     const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: "http://localhost/" });
 
     global.document = dom.window.document;
     global.localStorage = dom.window.localStorage
   })
+
 
   test('тест регистрация юзера', async () => {
     const fakeRegisterResponse =
@@ -87,4 +95,27 @@ describe('тест асинхронных экшенов', () => {
     expect(newState2.user.user).toEqual(fakeRegisterResponse.user);
     expect(newState2.user.isLoading).toEqual(false);
   })
+  test('тест регистрация юзера rejected', async () => {
+
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve("popa"),
+      })
+    ) as jest.Mock;
+
+    const store = configureStore({
+      reducer: { user: userReducer }
+    });
+
+    const dispatchPromise = store.dispatch(registerUserApiThunk(fakeRegisterData));
+    const newState1 = store.getState();
+    expect(newState1.user.isLoading).toEqual(true);
+    await dispatchPromise;
+
+    const newState2 = store.getState();
+    expect(newState2.user.user).toEqual(null);
+    expect(newState2.user.isLoading).toEqual(false);
+  });
+
 })
