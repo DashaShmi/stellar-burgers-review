@@ -29,7 +29,7 @@ describe('тест синхронных экшенов', () => {
     const initialUserState: userState =
     {
       isLoading: false,
-      user: null,
+      user: fakeUser,
       isAuthChecked: false,
       orders: []
     };
@@ -40,12 +40,15 @@ describe('тест синхронных экшенов', () => {
 });
 
 describe('тест асинхронных экшенов', () => {
-
   beforeEach(() => {
     const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: "http://localhost/" });
 
     global.document = dom.window.document;
     global.localStorage = dom.window.localStorage
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   const fakeRegisterData =
@@ -79,12 +82,16 @@ describe('тест асинхронных экшенов', () => {
       password: "fake password"
     }
 
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(fakeRegisterResponse),
-      })
-    ) as jest.Mock;
+    jest
+      .spyOn(global, "fetch")
+      .mockImplementation
+      (
+        () =>
+          Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve(fakeRegisterResponse),
+          } as Response)
+      );
 
     const store = configureStore({
       reducer: { user: userReducer }
@@ -92,24 +99,21 @@ describe('тест асинхронных экшенов', () => {
 
     const dispatchPromise = store.dispatch(registerUserApiThunk(fakeRegisterData));
     const newState = store.getState();
-    expect(newState.user.isLoading).toEqual(true);
-    const a = await dispatchPromise;
 
-    console.log(a);
+    expect(newState.user.isLoading).toEqual(true);
+
+    await dispatchPromise;
 
     const newState2 = store.getState();
+
     expect(newState2.user.user).toEqual(fakeRegisterResponse.user);
     expect(newState2.user.isLoading).toEqual(false);
   });
 
   test('тест регистрация юзера rejected', async () => {
-
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve("popa"),
-      })
-    ) as jest.Mock;
+    jest
+      .spyOn(global, "fetch")
+      .mockImplementation(() => Promise.reject("popa"));
 
     const store = configureStore({
       reducer: { user: userReducer }
@@ -117,10 +121,13 @@ describe('тест асинхронных экшенов', () => {
 
     const dispatchPromise = store.dispatch(registerUserApiThunk(fakeRegisterData));
     const newState1 = store.getState();
+
     expect(newState1.user.isLoading).toEqual(true);
+
     await dispatchPromise;
 
     const newState2 = store.getState();
+
     expect(newState2.user.user).toEqual(null);
     expect(newState2.user.isLoading).toEqual(false);
   });
@@ -137,12 +144,16 @@ describe('тест асинхронных экшенов', () => {
       }
     }
 
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(fakeLoginResponse),
-      })
-    ) as jest.Mock;
+    jest
+      .spyOn(global, "fetch")
+      .mockImplementation
+      (
+        () =>
+          Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve(fakeLoginResponse)
+          } as Response)
+      );
 
     const store = configureStore({
       reducer: { user: userReducer }
@@ -150,18 +161,21 @@ describe('тест асинхронных экшенов', () => {
 
     const dispatchPromise = store.dispatch(loginUserThunk(fakeLoginData));
     const newState1 = store.getState();
+
     expect(newState1.user.isLoading).toEqual(true);
+
     await dispatchPromise;
+
     const newState2 = store.getState();
 
-    expect(newState2.user.user).toEqual(fakeLoginResponse.user);
     expect(newState2.user.isLoading).toEqual(false);
+    expect(newState2.user.user).toEqual(fakeLoginResponse.user);
   });
 
   test('тест лог-ина юзера rejected', async () => {
-
-
-    global.fetch = jest.fn(() => Promise.reject('popa')) as jest.Mock;
+    jest
+      .spyOn(global, "fetch")
+      .mockImplementation(() => Promise.reject("popa"));
 
     const store = configureStore({
       reducer: { user: userReducer }
@@ -175,7 +189,6 @@ describe('тест асинхронных экшенов', () => {
 
     expect(newState2.user.user).toEqual(null);
     expect(newState2.user.isLoading).toEqual(false);
-
   });
 
   const orderResponse =
@@ -200,17 +213,17 @@ describe('тест асинхронных экшенов', () => {
     "totalToday": 82
   };
 
-
   test('тест на получение заказов', async () => {
-    const dom = new JSDOM();
-    global.document = dom.window.document;
-
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(orderResponse)
-      })
-    ) as jest.Mock;
+    jest
+      .spyOn(global, "fetch")
+      .mockImplementation
+      (
+        () =>
+          Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve(orderResponse)
+          } as Response)
+      );
 
     const store = configureStore({
       reducer: { user: userReducer }
@@ -227,7 +240,9 @@ describe('тест асинхронных экшенов', () => {
   });
 
   test('тест на получение заказов rejected', async () => {
-    global.fetch = jest.fn(() => Promise.reject('popa')) as jest.Mock;
+    jest
+      .spyOn(global, "fetch")
+      .mockImplementation(() => Promise.reject("popa"));
 
     const store = configureStore({
       reducer: { user: userReducer }
@@ -235,8 +250,11 @@ describe('тест асинхронных экшенов', () => {
 
     const dispatchPromise = store.dispatch(getOrdersApiThunk());
     const newState1 = store.getState();
+
     expect(newState1.user.isLoading).toEqual(true);
+
     await dispatchPromise;
+
     const newState2 = store.getState();
 
     expect(newState2.user.orders).toEqual([]);
@@ -252,46 +270,54 @@ describe('тест асинхронных экшенов', () => {
       }
     }
 
-    const dom = new JSDOM();
-    global.document = dom.window.document;
-
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(fakeUpdateUserResponse)
-      })
-    ) as jest.Mock;
+    jest
+      .spyOn(global, "fetch")
+      .mockImplementation
+      (
+        () =>
+          Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve(fakeUpdateUserResponse)
+          } as Response)
+      );
 
     const store = configureStore({
       reducer: { user: userReducer }
     });
+
     const dispatchPromise = store.dispatch(updateUserApiThank({}));
     const newState1 = store.getState();
+
     expect(newState1.user.isLoading).toEqual(true);
+
     await dispatchPromise;
+
     const newState2 = store.getState();
 
+    expect(newState2.user.isLoading).toEqual(false);
     expect(newState2.user.user).toEqual(fakeUpdateUserResponse.user);
   });
 
   test('тест на отправление данных юзера rejected', async () => {
-
-    global.fetch = jest.fn(() => Promise.reject('popa')) as jest.Mock;
+    jest
+      .spyOn(global, "fetch")
+      .mockImplementation(() => Promise.reject("popa"));
 
     const store = configureStore({
       reducer: { user: userReducer }
     });
 
     const dispatchPromise = store.dispatch(updateUserApiThank({}));
+
     const newState1 = store.getState();
+
     expect(newState1.user.isLoading).toEqual(true);
+
     await dispatchPromise;
+
     const newState2 = store.getState();
 
-    expect(newState2.user.orders).toEqual([]);
     expect(newState2.user.isLoading).toEqual(false);
-
+    expect(newState2.user.orders).toEqual([]);
   });
 })
-
-
