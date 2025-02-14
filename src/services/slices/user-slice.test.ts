@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TUser } from "../../utils/types";
-import { authChecked, getOrdersApiThunk, loginUserThunk, registerUserApiThunk, userLogout, userReducer, userState } from "./user-slice";
+import { authChecked, getOrdersApiThunk, loginUserThunk, registerUserApiThunk, updateUserApiThank, userLogout, userReducer, userState } from "./user-slice";
 import { JSDOM } from "jsdom"
 import { TLoginData } from "../../utils/burger-api";
 
@@ -126,7 +126,6 @@ describe('тест асинхронных экшенов', () => {
   });
 
   test('тест лог-ина юзера', async () => {
-
     const fakeLoginResponse =
     {
       "success": true,
@@ -227,7 +226,6 @@ describe('тест асинхронных экшенов', () => {
     expect(newState2.user.isLoading).toEqual(false);
   });
 
-
   test('тест на получение заказов rejected', async () => {
     global.fetch = jest.fn(() => Promise.reject('popa')) as jest.Mock;
 
@@ -243,6 +241,41 @@ describe('тест асинхронных экшенов', () => {
 
     expect(newState2.user.orders).toEqual([]);
     expect(newState2.user.isLoading).toEqual(false);
+  })
+
+
+  test('тест на отправление данных юзера', async () => {
+    const fakeUpdateUserResponse = {
+      "success": true,
+      "user": {
+        "email": "taksa@gmail.com",
+        "name": "Зюзя Фиго"
+      }
+    }
+
+    // const fakeUpdateData = 
+    const dom = new JSDOM();
+    global.document = dom.window.document;
+
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(fakeUpdateUserResponse)
+      })
+    ) as jest.Mock;
+
+    const store = configureStore({
+      reducer: { user: userReducer }
+    });
+    const dispatchPromise = store.dispatch(updateUserApiThank({}));
+    const newState1 = store.getState();
+    expect(newState1.user.isLoading).toEqual(true);
+    await dispatchPromise;
+    const newState2 = store.getState();
+
+    expect(newState2.user.user).toEqual(fakeUpdateUserResponse.user);
+
+
   })
 
 

@@ -386,7 +386,6 @@ describe('тесты синхронных экшенов', () => {
       expect(newState1.burger.orderRequest).toEqual(true);
       // ждем завершения санки
       const a = await dispatchPromise;
-      // console.log(a);
       const newState2 = store.getState();
       expect(newState2.burger.orderRequest).toEqual(false);
       expect(newState2.burger.orderModalData).toEqual(orderResponse.order);
