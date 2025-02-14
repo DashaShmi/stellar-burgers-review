@@ -241,8 +241,7 @@ describe('тест асинхронных экшенов', () => {
 
     expect(newState2.user.orders).toEqual([]);
     expect(newState2.user.isLoading).toEqual(false);
-  })
-
+  });
 
   test('тест на отправление данных юзера', async () => {
     const fakeUpdateUserResponse = {
@@ -253,7 +252,6 @@ describe('тест асинхронных экшенов', () => {
       }
     }
 
-    // const fakeUpdateData = 
     const dom = new JSDOM();
     global.document = dom.window.document;
 
@@ -274,9 +272,26 @@ describe('тест асинхронных экшенов', () => {
     const newState2 = store.getState();
 
     expect(newState2.user.user).toEqual(fakeUpdateUserResponse.user);
+  });
 
+  test('тест на отправление данных юзера rejected', async () => {
 
-  })
+    global.fetch = jest.fn(() => Promise.reject('popa')) as jest.Mock;
 
+    const store = configureStore({
+      reducer: { user: userReducer }
+    });
 
+    const dispatchPromise = store.dispatch(updateUserApiThank({}));
+    const newState1 = store.getState();
+    expect(newState1.user.isLoading).toEqual(true);
+    await dispatchPromise;
+    const newState2 = store.getState();
+
+    expect(newState2.user.orders).toEqual([]);
+    expect(newState2.user.isLoading).toEqual(false);
+
+  });
 })
+
+
