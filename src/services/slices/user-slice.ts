@@ -82,7 +82,7 @@ export interface userState {
   isAuthChecked: boolean;
   orders: TOrder[];
 }
-const initialState: userState = {
+export const initialUserState: userState = {
   isLoading: false,
   user: null,
   isAuthChecked: false,
@@ -91,7 +91,7 @@ const initialState: userState = {
 
 export const userSlice = createSlice({
   name: 'user',
-  initialState,
+  initialState: initialUserState,
   reducers: {
     userLogout: (state) => {
       state.user = null;

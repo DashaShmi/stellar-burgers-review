@@ -8,7 +8,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 import { burgerReducer, burgerSlice, userReducer, userSlice } from '@slices';
 
-const rootReducer = combineSlices(burgerSlice, userSlice);
+export const rootReducer = combineSlices(burgerSlice, userSlice);
 
 const store = configureStore({
   reducer: rootReducer,

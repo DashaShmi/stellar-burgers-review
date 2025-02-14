@@ -41,7 +41,7 @@ export interface BurgerState {
   orderModalData: TOrder | null;
 }
 
-const initialState: BurgerState = {
+export const initialBurgerState: BurgerState = {
   ingredients: [],
   isLoading: false,
   feed: {
@@ -59,7 +59,7 @@ const initialState: BurgerState = {
 
 export const burgerSlice = createSlice({
   name: 'burger',
-  initialState,
+  initialState: initialBurgerState,
 
   selectors: {
     getIngredients: (state) => state.ingredients,
