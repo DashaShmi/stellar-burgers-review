@@ -4,10 +4,14 @@ const cratorBunId = '643d69a5c3f7b9001cfa093c';// Kраторная булка
 const cutletId = '643d69a5c3f7b9001cfa0941';// Биокотлета из марсианской Магнолии
 const filletId = '643d69a5c3f7b9001cfa093e';//Филе Люминесцентного тетраодонтимформа
 
+const testAppUrl = 'http://localhost:4000/';
+const baseApiUrl = 'https://norma.nomoreparties.space/api';
+const NO_BUN_SELECTOR = '[data-cy=no-bun]';
+
 function setupFakeApi() {
-  cy.intercept('GET', 'https://norma.nomoreparties.space/api/ingredients', { fixture: 'ingredients' });
-  cy.intercept('GET', 'https://norma.nomoreparties.space/api/auth/user', { fixture: 'user' });
-  cy.intercept('POST', 'https://norma.nomoreparties.space/api/orders', { fixture: 'order' });
+  cy.intercept('GET', `${baseApiUrl}/ingredients`, { fixture: 'ingredients' });
+  cy.intercept('GET', `${baseApiUrl}/api/auth/user`, { fixture: 'user' });
+  cy.intercept('POST', `${baseApiUrl}/orders`, { fixture: 'order' });
 }
 
 function getIngridientButton(ingridientId: string): Cypress.Chainable<JQuery<HTMLButtonElement>> {
@@ -20,8 +24,8 @@ function getIngridientButton(ingridientId: string): Cypress.Chainable<JQuery<HTM
 describe('проверяем проверяем доступность приложения', function () {
   beforeEach(() => setupFakeApi());
 
-  it('сервис должен быть доступен по адресу localhost:4000', function () {
-    cy.visit('http://localhost:4000/');
+  it('сервис должен быть доступен по адресу приложения', function () {
+    cy.visit(testAppUrl);
   });
 });
 
@@ -29,7 +33,7 @@ describe('проверяем добавление ингредиента из с
   beforeEach(() => setupFakeApi())
 
   it('после клика на "добавить" текст в булке изменился', () => {
-    cy.visit('http://localhost:4000/');
+    cy.visit(testAppUrl);
 
     getIngridientButton(cratorBunId).click();
 
@@ -45,18 +49,18 @@ describe('проверяем добавление ингредиента из с
   });
 
   it('добавление начинок', () => {
-    cy.visit('http://localhost:4000/');
+    cy.visit(testAppUrl);
 
     getIngridientButton(cutletId).click();
     getIngridientButton(filletId).click();
 
-    cy.get(`[data-cy=no-bun]`).should("have.length", 2);
-    cy.get(`[data-cy=no-bun]`).eq(0).contains("Биокотлета из марсианской Магнолии");
-    cy.get(`[data-cy=no-bun]`).eq(1).contains("Филе Люминесцентного тетраодонтимформа");
+    cy.get(NO_BUN_SELECTOR).should("have.length", 2);
+    cy.get(NO_BUN_SELECTOR).eq(0).contains("Биокотлета из марсианской Магнолии");
+    cy.get(NO_BUN_SELECTOR).eq(1).contains("Филе Люминесцентного тетраодонтимформа");
   });
 
   it('открытие модалки, детальное описание', () => {
-    cy.visit('http://localhost:4000/');
+    cy.visit(testAppUrl);
     const ingidient1 = cy.get(`[data-cy=ingridient-${cutletId}]`);
     ingidient1.find('a').click();
 
@@ -67,13 +71,13 @@ describe('проверяем добавление ингредиента из с
   })
 
   it('детальное описание по прямой ссылке открывается без модалки', () => {
-    cy.visit(`http://localhost:4000/ingredients/${filletId}`);
+    cy.visit(`testAppUrlingredients/${filletId}`);
     cy.get(`[data-cy=modal]`).should('not.exist');
     cy.get(`[data-cy=ingidientDetail]`).contains('Филе Люминесцентного тетраодонтимформа');
   })
 
   it('закрытие модалки на крестик', () => {
-    cy.visit('http://localhost:4000/');
+    cy.visit(testAppUrl);
     const ingidient1 = cy.get(`[data-cy=ingridient-${cutletId}]`);
     ingidient1.find('a').click();
     const buttonClose = cy.get(`[data-cy=button-close]`);
@@ -81,7 +85,7 @@ describe('проверяем добавление ингредиента из с
     cy.get(`[data-cy=modal]`).should('not.exist');
   })
   it('закрытие модалки кликом на оверлей', () => {
-    cy.visit('http://localhost:4000/');
+    cy.visit(testAppUrl);
     const ingidient1 = cy.get(`[data-cy=ingridient-${cutletId}]`);
     ingidient1.find('a').click();
     const overlay = cy.get(`[data-cy=overlay]`);
@@ -96,7 +100,7 @@ describe('тест на запрос данных пользователя и з
   it('собираем заказ в конструкторе бургера', () => {
     setCookie('accessToken', 'popa');
 
-    cy.visit('http://localhost:4000/');
+    cy.visit('testAppUrl);
     getIngridientButton(cratorBunId).click();
     getIngridientButton(cutletId).click();
     getIngridientButton(filletId).click();
@@ -112,7 +116,7 @@ describe('тест на запрос данных пользователя и з
   it('Закрывается модальное окно и проверяется успешность закрытия.', () => {
     setCookie('accessToken', 'popa');
 
-    cy.visit('http://localhost:4000/');
+    cy.visit(testAppUrl);
     getIngridientButton(cratorBunId).click();
     getIngridientButton(cutletId).click();
     getIngridientButton(filletId).click();
