@@ -61,7 +61,7 @@ type TIngredientsResponse = TServerResponse<{
   data: TIngredient[];
 }>;
 
-type TFeedsResponse = TServerResponse<{
+export type TFeedsResponse = TServerResponse<{
   orders: TOrder[];
   total: number;
   totalToday: number;
@@ -76,7 +76,8 @@ export const getIngredientsApi = () =>
     .then((res) => checkResponse<TIngredientsResponse>(res))
     .then((data) => {
       if (data?.success) return data.data;
-      return Promise.reject(data);
+
+      return Promise.reject('хули не success');
     });
 
 export const getFeedsApi = () =>

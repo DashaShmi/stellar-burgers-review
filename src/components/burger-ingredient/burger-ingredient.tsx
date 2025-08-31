@@ -3,12 +3,25 @@ import { useLocation } from 'react-router-dom';
 
 import { BurgerIngredientUI } from '@ui';
 import { TBurgerIngredientProps } from './type';
+import { addIngridient, setBun } from '@slices';
+import { useAppDispatch } from '@store';
 
 export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
   ({ ingredient, count }) => {
     const location = useLocation();
+    const dispatch = useAppDispatch();
 
-    const handleAdd = () => {};
+    const handleAdd = () => {
+      if (ingredient.type === 'bun') {
+        dispatch(setBun(ingredient));
+      } else {
+        const constructorIndridient = {
+          ...ingredient,
+          id: crypto.randomUUID()
+        };
+        dispatch(addIngridient(constructorIndridient));
+      }
+    };
 
     return (
       <BurgerIngredientUI
